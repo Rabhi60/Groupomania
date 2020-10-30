@@ -7,10 +7,10 @@ toobusy.maxLag(10);
 const dotenv = require('dotenv');// on importe dotenv pour masquer l'url/mdp/nom d'hôte
 dotenv.config();
 
-const commentRoutes = require('./routes/comment');// la routes qui correspond a nos comments (GET/POST/PUT/DELETE)
-const likeRoutes = require('./routes/like');// la routes qui correspond a nos likes (POST)
-const adminRoutes = require('./routes/admin');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
-const messageRoutes = require('./routes/message');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
+// const commentRoutes = require('./routes/comment');// la routes qui correspond a nos comments (GET/POST/PUT/DELETE)
+// const likeRoutes = require('./routes/like');// la routes qui correspond a nos likes (POST)
+// const adminRoutes = require('./routes/admin');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
+// const messageRoutes = require('./routes/message');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
 const userRoutes = require('./routes/user');// la routes qui correspond a l'authentification (POST)
 
 
@@ -24,6 +24,7 @@ app.use((req, res, next) => {// partie cors
     next();
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());//Pour toutes les routes de notre application, c'est ce qui va transformer le corps de la requête en objet JavaScript utilisable, ce middleware sera global pour l'application
 
 app.use('/images', express.static(path.join(__dirname, 'images')));// pour les requêtes a /images, express.static est utilisé pour servir un dossier static, on utilise la methode path.joint que l'on va lui passer dirname qui est le nom dossier dans lequel on va se trouver et on lui ajoute images qui est le dossier static
@@ -39,10 +40,11 @@ app.use(function(req, res, next) {// toobusy permet de contrer les attaques type
 });
 
 
-app.use('/api/comment', commentRoutes);// on utilse cette base pour toutes nos comments
-app.use('/api/like', likeRoutes);// on utilse cette base pour toutes nos routes likes
-app.use('/api/admin', adminRoutes);// on utilse cette base pour toutes nos routes admin
-app.use('/api/message', messageRoutes);// on utilse cette base pour toutes nos routes message
-app.use('/api/auth', userRoutes);// on utilse cette base pour toutes nos authentification
+
+// app.use('/api/comment', commentRoutes);// on utilse cette base pour toutes nos comments
+// app.use('/api/like', likeRoutes);// on utilse cette base pour toutes nos routes likes
+// app.use('/api/admin', adminRoutes);// on utilse cette base pour toutes nos routes admin
+// app.use('/api/message', messageRoutes);// on utilse cette base pour toutes nos routes message
+app.use('/api', userRoutes);// on utilse cette base pour toutes nos authentification
 
 module.exports = app;// on va exporter cette application (const app), pour pouvoir l'utilser sur nos autres fichiers du projet

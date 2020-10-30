@@ -1,1 +1,1 @@
-const db = require('../models');
+const models = require('../models');
