@@ -8,9 +8,9 @@ const dotenv = require('dotenv');// on importe dotenv pour masquer l'url/mdp/nom
 dotenv.config();
 
 // const commentRoutes = require('./routes/comment');// la routes qui correspond a nos comments (GET/POST/PUT/DELETE)
-// const likeRoutes = require('./routes/like');// la routes qui correspond a nos likes (POST)
+const likeRoutes = require('./routes/like');// la routes qui correspond a nos likes (POST)
 // const adminRoutes = require('./routes/admin');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
-// const messageRoutes = require('./routes/message');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
+const messageRoutes = require('./routes/message');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
 const userRoutes = require('./routes/user');// la routes qui correspond a l'authentification (POST)
 
 
@@ -41,10 +41,10 @@ app.use(function(req, res, next) {// toobusy permet de contrer les attaques type
 
 
 
-// app.use('/api/comment', commentRoutes);// on utilse cette base pour toutes nos comments
-// app.use('/api/like', likeRoutes);// on utilse cette base pour toutes nos routes likes
-// app.use('/api/admin', adminRoutes);// on utilse cette base pour toutes nos routes admin
-// app.use('/api/message', messageRoutes);// on utilse cette base pour toutes nos routes message
+// app.use('/api', commentRoutes);// on utilse cette base pour toutes nos comments
+app.use('/api', likeRoutes);// on utilse cette base pour toutes nos routes likes
+// app.use('/api', adminRoutes);// on utilse cette base pour toutes nos routes admin
+app.use('/api', messageRoutes);// on utilse cette base pour toutes nos routes message
 app.use('/api', userRoutes);// on utilse cette base pour toutes nos authentification
 
 module.exports = app;// on va exporter cette application (const app), pour pouvoir l'utilser sur nos autres fichiers du projet
