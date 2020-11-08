@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+     associate(models) {
       // define association here
-      models.User.hasMany(models.Message)//on a aujouté ici pour associer notre user à message
+      models.User.hasMany(models.Message, {foreignKey: 'userId'}, {onDelete: 'cascade'});//on a aujouté ici pour associer notre user à message
     }
   };
   User.init({
@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    avatar: DataTypes.STRING,
     password: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN
   }, {
@@ -28,3 +27,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
+

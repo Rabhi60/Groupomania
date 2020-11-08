@@ -3,7 +3,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
       id: {
-        allowNull: false,// pour dire que c'est demandé non null comme dans le schéma
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
@@ -11,10 +11,15 @@ module.exports = {
       email: {
         allowNull: false,
         type: Sequelize.STRING,
+        unique: true,
+        validate: {
+          isEmail: true
+        }
       },
       username: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       firstname: {
         allowNull: false,

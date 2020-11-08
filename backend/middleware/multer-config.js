@@ -4,7 +4,7 @@ const MIME_TYPES = {// les extensions utiliser pour nos fichiers
     'image/jpg': 'jpg', // jpg ne change pas
     'image/jpeg': 'jpg',// on transforme jpeg en jpg
     'image/png': 'png',// png ne change pas
-    'image/gif': 'gif'// png ne change pas
+    'image/gif': 'gif'// gif ne change pas
 };
 
 const storage = multer.diskStorage({

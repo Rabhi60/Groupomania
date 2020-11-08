@@ -20,6 +20,7 @@
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
+    "eslint": "^7.12.1",
     "express": "^4.17.1",
     "express-bouncer": "^0.2.0",
     "helmet": "^4.1.1",
@@ -31,6 +32,7 @@
     "password-validator": "^5.1.0",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
+    "sqlite3": "^5.0.0",
     "toobusy-js": "^0.5.1"
   }
 }

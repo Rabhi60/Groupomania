@@ -6,14 +6,14 @@ const models = require('../models');
 // Constants
 const emailRegex    = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordValidator  = require('../middleware/passwordValidator');// middleware pour contrôler le mot de passe
-const nameRegex = /^[a-zÀ-ÿ\d\-.'\s]{4,30}$/i;
+const nameRegex = /^[a-zÀ-ÿ\d\-.'\s]{2,30}$/i;
 const urlRegex = /^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i;
 
 //SIGNUP
 
   exports.signup = async (req, res, next) => {
     console.log(req.body);
-    if(!nameRegex.test(req.body.username)|| !nameRegex.test(req.body.firstname) || !nameRegex.test(req.body.lastname)|| !urlRegex.test(req.body.avatar)) {
+    if(!nameRegex.test(req.body.username)|| !nameRegex.test(req.body.firstname) || !nameRegex.test(req.body.lastname)) {
       return res.status(400).json({ 'error': 'the content is not valid' });
     }
     if (!emailRegex.test(req.body.email) || !emailValidator.validate(req.body.email)) {
@@ -67,23 +67,19 @@ exports.login = function(req, res, next) {
 
   // Get Profil
   exports.getUserProfile =  (req, res, next) => {
+    // if (userId < 0)
+    //   return res.status(400).json({ 'error': 'wrong token' });
 
-    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
-    const decodedToken = jwt.verify(token, 'TEST_TOKEN_SECRET');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
-    const userId = decodedToken.userId;
-    if (userId < 0)
-      return res.status(400).json({ 'error': 'wrong token' });
-
-    models.User.findOne({ id: req.params.id,
-      attributes: [ 'id', 'username', 'firstname', 'lastname', 'avatar', 'password'],
-      where: {id: userId}
+    models.User.findOne({
+      attributes: [ 'id', 'email','username', 'firstname', 'lastname'],
+      where: {id: req.params.id}
     }).then(user => res.status(200).json(user))
       .catch(error => res.status(404).json({error}));
   };
 
   // Modify Profil 
   exports.updateUserProfile = async (req, res, next) => {
-    if(!nameRegex.test(req.body.username)|| !nameRegex.test(req.body.firstname) || !nameRegex.test(req.body.lastname)|| !urlRegex.test(req.body.avatar)) {
+    if(!nameRegex.test(req.body.username)|| !nameRegex.test(req.body.firstname) || !nameRegex.test(req.body.lastname)) {
       return res.status(400).json({ 'error': 'the content is not valid' });
     }
     if (!emailRegex.test(req.body.email) || !emailValidator.validate(req.body.email)) {
@@ -93,29 +89,19 @@ exports.login = function(req, res, next) {
       return res.status(400).json({ 'error': 'password invalid (must length 8 - 100 and include 2 number at least)' });
     }
 
-    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
-    const decodedToken = jwt.verify(token, 'TEST_TOKEN_SECRET');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
-    const userId = decodedToken.userId;
-    models.User.findOne({
-            attributes: ['id', 'email', 'username', 'firstname', 'lastname', 'avatar', 'password'],
-            where: { id: userId }
-          }).catch(error => res.status(400).json({error}));
-
     const user =  req.body;
     user.password = await bcrypt.hash(user.password, 10);
     await models.User.update(
         req.body, 
-      {where: { id: userId }
+      {where: { id: req.body.id }
     }).then(() => res.status(200).json({message: 'User modifiée!'}))
     .catch(error => res.status(500).json({error}));
   };
 
   exports.deleteUserProfile = async (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
-    const decodedToken = jwt.verify(token, 'TEST_TOKEN_SECRET');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
-    const userId = decodedToken.userId;
-    models.User.destroy({
-            where: { id: userId }
-          }).then(() => res.status(200).json({message: 'User supprimée!'}))
-            .catch(error => res.status(401).json({error}));
+      await models.User.destroy({
+        where: { id: req.params.id }
+        
+      }).then(() => res.status(200).json({message: 'User supprimée!'}))
+        .catch(error => res.status(401).json({error}));
   };
