@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');// on importe bcrypt qui va nous permettre de crypter nos mots de passe
 const jwt = require('jsonwebtoken');// on importe jsonwebtoken
 const emailValidator = require('email-validator');// validateur d'émail
-const models = require('../models');
+const db = require('../models/index');
 
 // Constants
 const emailRegex    = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -41,7 +41,7 @@ exports.login = function(req, res, next) {
     return res.status(400).json({ 'error': 'password invalid (must length 8 - 100 and include 2 number at least)' });
   }
 
-  models.User.findOne({  where: { email: req.body.email } })// on va chercher l'email de l'utilsateur dans la base de donnée
+  db.User.findOne({  where: { email: req.body.email } })// on va chercher l'email de l'utilsateur dans la base de donnée
     .then(user => {
         if (!user){// si on ne trouve pas d'email correspondant on renvoie l'erreur ci-dessous
             return res.status(401).json({ message: 'this account is not valid' });// erreur 401 non autorisé
@@ -70,7 +70,7 @@ exports.login = function(req, res, next) {
     // if (userId < 0)
     //   return res.status(400).json({ 'error': 'wrong token' });
 
-    models.User.findOne({
+    db.User.findOne({
       attributes: [ 'id', 'email','username', 'firstname', 'lastname'],
       where: {id: req.params.id}
     }).then(user => res.status(200).json(user))
@@ -91,7 +91,7 @@ exports.login = function(req, res, next) {
 
     const user =  req.body;
     user.password = await bcrypt.hash(user.password, 10);
-    await models.User.update(
+    await db.User.update(
         req.body, 
       {where: { id: req.body.id }
     }).then(() => res.status(200).json({message: 'User modifiée!'}))
@@ -99,7 +99,7 @@ exports.login = function(req, res, next) {
   };
 
   exports.deleteUserProfile = async (req, res, next) => {
-      await models.User.destroy({
+      await db.User.destroy({
         where: { id: req.params.id }
         
       }).then(() => res.status(200).json({message: 'User supprimée!'}))

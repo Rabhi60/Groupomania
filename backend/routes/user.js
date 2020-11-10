@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 
 
 router.post('/users/signup/', userCtrl.signup);
-router.post('/users/login/', userCtrl.login);// la route pour s'authentifier
+router.post('/users/login/', bouncer.block, userCtrl.login);// la route pour s'authentifier
 router.get('/users/me/:id', auth, userCtrl.getUserProfile);
 router.put('/users/me/', auth, userCtrl.updateUserProfile);
 router.delete('/users/me/:id', auth, userCtrl.deleteUserProfile);

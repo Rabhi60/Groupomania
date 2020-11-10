@@ -73,7 +73,7 @@
 <script>
 import axios from 'axios'
 let sessionToken = JSON.parse(localStorage.getItem('session'));
-let userIdToken = JSON.parse(localStorage.getItem('userId'));
+let userId = JSON.parse(localStorage.getItem('userId'));
 
 export default {
   name: 'ModifyProfile',
@@ -90,11 +90,12 @@ export default {
       }
     },
   methods: {
+    
     onSubmit(evt) {
       evt.preventDefault()
       const self = this;
       axios.put('http://localhost:3000/api/users/me/',{
-        id: userIdToken,
+        id: userId,
         email: this.form.email,
         username: this.form.username, 
         firstname: this.form.firstname, 

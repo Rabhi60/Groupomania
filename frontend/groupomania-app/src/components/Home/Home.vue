@@ -15,27 +15,33 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-      <h1>Hello {{data.lastname}}</h1>
+      <b-jumbotron>
+        <h1>Hello {{data.username}}</h1>
+      </b-jumbotron>
     </div>
+    
 
-    <div v-bind:key="index" v-for="(message, index) in messages " class="col-10 mx-auto my-5 " >
+    
+    <!-- <div :key="index" v-for="(message, index) in messages " class="col-10 col-md-7 mx-auto my-5" >
+      <router-link :to='`/Home/OneMessage/${message.id}`'  >
       <b-card 
         :title="message.title"
         :img-src="message.attachment"
         img-alt="Image"
         img-top
+        :header='message.User.username'
         tag="article"
         bg-variant="dark" 
         text-variant="white" 
         class="text-center mb-2 col-12 mx-auto  "
-         
         >
-
         <b-card-text>
             {{message.content}}
         </b-card-text>
       </b-card>
-    </div>
+       </router-link>
+    </div> -->
+   
   </div>
 </template>
 
@@ -54,6 +60,7 @@ export default {
           messages: [],
        }
     },
+  
   mounted(){
       let self = this;
     axios.get(`http://localhost:3000/api/users/me/${id}`,
@@ -68,6 +75,7 @@ export default {
       });
     axios.get(`http://localhost:3000/api/messages/`,
       {headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Barer ${sessionToken}`
     }})
       .then(function (response) {
@@ -92,10 +100,10 @@ export default {
 <style scoped lang="scss">
 
 h1{
-  margin-top: 2em;
-  font-size: 5rem;
+  margin: 1em;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 1em;
+
 }
 img{
   max-height: 50vh;
@@ -116,4 +124,5 @@ a{
 div{
   padding: 0;
 }
+
 </style>

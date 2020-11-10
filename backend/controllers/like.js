@@ -1,4 +1,4 @@
-const models = require('../models');
+const db = require('../models/index');
 
 // Constants
 const DISLIKED = 0;
@@ -20,7 +20,7 @@ exports.likePost = (req, res, next) => {
 
     asyncLib.waterfall([
       function(done) {
-        models.Message.findOne({
+        db.Message.findOne({
           where: { id: messageId }
         })
         .then(function(messageFound) {
@@ -32,7 +32,7 @@ exports.likePost = (req, res, next) => {
       },
       function(messageFound, done) {
         if(messageFound) {
-          models.User.findOne({
+          db.User.findOne({
             where: { id: userId }
           })
           .then(function(userFound) {
@@ -47,7 +47,7 @@ exports.likePost = (req, res, next) => {
       },
       function(messageFound, userFound, done) {
         if(userFound) {
-          models.Like.findOne({
+          db.Like.findOne({
             where: {
               userId: userId,
               messageId: messageId
@@ -65,7 +65,7 @@ exports.likePost = (req, res, next) => {
       },
       function(messageFound, userFound, userAlreadyLikedFound, done) {
         if(!userAlreadyLikedFound) {
-          messageFound.addUser(userFound, { isLike: LIKED })
+          messageFound.addUser(userFound, { likeType: LIKED })
           .then(function (alreadyLikeFound) {
             done(null, messageFound, userFound);
           })
@@ -73,7 +73,7 @@ exports.likePost = (req, res, next) => {
             return res.status(500).json({ 'error': 'unable to set user reaction' });
           });
         } else {
-          if (userAlreadyLikedFound.isLike === DISLIKED) {
+          if (userAlreadyLikedFound.likeType === DISLIKED) {
             userAlreadyLikedFound.update({
               isLike: LIKED,
             }).then(function() {
@@ -120,7 +120,7 @@ exports.likePost = (req, res, next) => {
 
    asyncLib.waterfall([
     function(done) {
-       models.Message.findOne({
+       db.Message.findOne({
          where: { id: messageId }
        })
        .then(function(messageFound) {
@@ -132,7 +132,7 @@ exports.likePost = (req, res, next) => {
      },
      function(messageFound, done) {
        if(messageFound) {
-         models.User.findOne({
+         db.User.findOne({
            where: { id: userId }
          })
          .then(function(userFound) {
@@ -147,7 +147,7 @@ exports.likePost = (req, res, next) => {
      },
      function(messageFound, userFound, done) {
        if(userFound) {
-         models.Like.findOne({
+         db.Like.findOne({
            where: {
              userId: userId,
              messageId: messageId
@@ -165,7 +165,7 @@ exports.likePost = (req, res, next) => {
      },
      function(messageFound, userFound, userAlreadyLikedFound, done) {
       if(!userAlreadyLikedFound) {
-        messageFound.addUser(userFound, { isLike: DISLIKED })
+        messageFound.addUser(userFound, { likeType: DISLIKED })
         .then(function (alreadyLikeFound) {
           done(null, messageFound, userFound);
         })
@@ -173,7 +173,7 @@ exports.likePost = (req, res, next) => {
           return res.status(500).json({ 'error': 'unable to set user reaction' });
         });
       } else {
-        if (userAlreadyLikedFound.isLike === LIKED) {
+        if (userAlreadyLikedFound.likeType === LIKED) {
           userAlreadyLikedFound.update({
             isLike: DISLIKED,
           }).then(function() {

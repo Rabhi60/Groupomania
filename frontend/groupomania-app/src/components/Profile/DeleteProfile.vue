@@ -44,7 +44,7 @@ export default {
   name: 'DeleteProfile',
    data() {
        return{
-           txt:''
+          txt:''
        }
     },
   methods: {
@@ -60,8 +60,6 @@ export default {
         console.log(response);
         localStorage.clear();
         self.$router.push('/')
-        
-  
       })
       .catch(function (erreur) {
         //On traite ici les erreurs éventuellement survenues
@@ -75,27 +73,27 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 h1{
-
   font-size: 2.5em;
   font-weight: bold;
   margin-bottom: 1em;
-
 }
 
 .router-link-active{
   color:white;
-   font-weight: bold;
+  font-weight: bold;
 }
+
 a{
-    color: grey;
-    font-size: 1.2em;
-    text-decoration: none;
+  color: grey;
+  font-size: 1.2em;
+  text-decoration: none;
 }
 div{
-    padding: 0;
+  padding: 0;
 }
- h2{
-    text-align: center;
+
+h2{
+  text-align: center;
 }
 
 </style>

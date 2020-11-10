@@ -74,14 +74,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+html, body{
+  font-size: 62.5%;
+}
 h1{
 margin-top: 2em;
-  font-size: 2.5em;
+  font-size: 3.5rem;
   font-weight: bold;
   margin-bottom: 1em;
-
 }
-
+h2{
+  margin-top: 1em;
+  font-size: 2.1rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
 .router-link-active{
   color:white;
    font-weight: bold;
