@@ -2,6 +2,7 @@
 // Authentification : Login(connexion) et Signup(Inscription)
 import Login from './components/Auth/Login.vue'
 import Signup from './components/Auth/Signup.vue'
+import ResetPassword from './components/Auth/ResetPassword.vue'
 
 //Accueil
 import Home from './components/Home/Home.vue'
@@ -14,11 +15,9 @@ import DeleteProfile from './components/Profile/DeleteProfile.vue'
 // La partie création de message, modification, suppression et message unique avec les commentaires et likes.
 import NewMessage from './components/Message/NewMessage.vue'
 import ModifyMessage from './components/Message/ModifyMessage.vue'
-import DeleteMessage from './components/Message/DeleteMessage.vue'
 import OneMessage from './components/Message/OneMessage.vue'
 
-//La partie modification et suppression des commentaires
-import ModifyComment from './components/Comment/ModifyComment.vue'
+//La partie suppression des commentaires
 import DeleteComment from './components/Comment/DeleteComment.vue'
 
 //export
@@ -27,6 +26,7 @@ export default [
     //Authentification login et signup
     {path: '/', component: Login},
     {path: '/Signup', component: Signup},
+    {path: '/ResetPassword', component: ResetPassword},
 
     //Accueil
     {path: '/Home', component: Home},
@@ -38,11 +38,9 @@ export default [
 
     //Message nouveau/modification/suppression
     {path: '/Home/NewMessage', component: NewMessage},
-    {path: '/Home/ModifyMessage/:id', component: ModifyMessage},
-    {path: '/Home/DeleteMessage', component: DeleteMessage},
-    {path: '/Home/OneMessage/:id', component: OneMessage},
+    {path: '/Home/ModifyMessage/:messageId', component: ModifyMessage},
+    {path: '/Home/OneMessage/:messageId', component: OneMessage},
 
-    //Commentaire modification/suppression
-    {path: '/Home/OneMessage/:id/ModifyComment', component: ModifyComment},
-    {path: '/Home/OneMessage/:id/DeleteComment', component: DeleteComment}
+    //Commentaire /suppression
+    {path: '/Home/OneMessage/:messageId/DeleteComment/:commentId', component: DeleteComment}
 ]

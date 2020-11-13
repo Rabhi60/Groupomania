@@ -37,6 +37,15 @@
           <!-- Valider -->
           <b-button type="submit" variant="success" class="col">Valider</b-button>
       </b-form>
+
+      <hr class='col-8'>
+      <div>
+        <router-link to="/ResetPassword/">
+        <p>Mot de passe oublie / connexion impossible ?</p>
+      </router-link>
+      </div>
+      
+
   </div>
 </template>
 

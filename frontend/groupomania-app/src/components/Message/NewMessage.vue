@@ -55,6 +55,7 @@ export default {
         attachment: '',
         content: '',
         likes: 0,
+        dislikes: 0,
         }
       }
     },
@@ -76,6 +77,7 @@ export default {
       fd.append("image", image);
       fd.append("content", this.form.content);
       fd.append("likes", this.form.likes);
+      fd.append("dislikes", this.form.dislikes);
      axios.post('http://localhost:3000/api/messages/new/', fd
       , {
           headers: {

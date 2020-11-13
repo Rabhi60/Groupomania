@@ -22,7 +22,7 @@
     
 
     
-    <!-- <div :key="index" v-for="(message, index) in messages " class="col-10 col-md-7 mx-auto my-5" >
+    <div :key="index" v-for="(message, index) in messages " class="col-10 col-md-7 mx-auto my-5" >
       <router-link :to='`/Home/OneMessage/${message.id}`'  >
       <b-card 
         :title="message.title"
@@ -40,7 +40,7 @@
         </b-card-text>
       </b-card>
        </router-link>
-    </div> -->
+    </div>
    
   </div>
 </template>
@@ -100,10 +100,11 @@ export default {
 <style scoped lang="scss">
 
 h1{
-  margin: 1em;
+  margin: 1.5em;
   font-size: 2.5rem;
   font-weight: bold;
-
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 img{
   max-height: 50vh;

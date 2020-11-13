@@ -9,15 +9,16 @@ dotenv.config();
 
 const commentRoutes = require('./routes/comment');// la routes qui correspond a nos comments (POST/DELETE)
 const likeRoutes = require('./routes/like');// la routes qui correspond a nos likes (POST)
-// const adminRoutes = require('./routes/admin');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
+const adminRoutes = require('./routes/admin');// la routes qui correspond a nos messages (GET/DELETE)
 const messageRoutes = require('./routes/message');// la routes qui correspond a nos messages (GET/POST/PUT/DELETE)
-const userRoutes = require('./routes/user');// la routes qui correspond a l'authentification (POST)
+const userRoutes = require('./routes/user');// la routes qui correspond a l'authentification (GET/POST/PUT/DELETE)
 
 
 
 const app = express();// on créé notre application express
 
 app.use((req, res, next) => {// partie cors
+
     res.setHeader('Access-Control-Allow-Origin', '*');// origin permet de voir qui peut utiliser l'API, l'étoile permet de dire que tout le monde peut accéder
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');// on donne l'autorisation d'utiliser certains en-tête
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');// on donne l'autorisation d'utiliser certaines méthodes les verbes de requête GET, POST...
@@ -41,10 +42,10 @@ app.use(function(req, res, next) {// toobusy permet de contrer les attaques type
 
 
 
-app.use('/api', commentRoutes);// on utilse cette base pour toutes nos comments
-app.use('/api', likeRoutes);// on utilse cette base pour toutes nos routes likes
-// app.use('/api', adminRoutes);// on utilse cette base pour toutes nos routes admin
-app.use('/api', messageRoutes);// on utilse cette base pour toutes nos routes message
-app.use('/api', userRoutes);// on utilse cette base pour toutes nos authentification
+app.use('/api/messages', commentRoutes);// on utilse cette base pour toutes nos comments
+app.use('/api/messages', likeRoutes);// on utilse cette base pour toutes nos routes likes
+app.use('/api/admin', adminRoutes);// on utilse cette base pour toutes nos routes admin
+app.use('/api/messages', messageRoutes);// on utilse cette base pour toutes nos routes message
+app.use('/api/users', userRoutes);// on utilse cette base pour toutes nos authentification
 
 module.exports = app;// on va exporter cette application (const app), pour pouvoir l'utilser sur nos autres fichiers du projet

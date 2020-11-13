@@ -45,12 +45,13 @@
     data() {
         return {
       form: {
-        id: this.$route.params.id,
+        messageId: this.$route.params.messageId,
         userId: userId,
         title: '',
         attachment: '',
         content: '',
         likes: 0,
+        dislikes: 0,
         }
       }
     },
@@ -67,8 +68,8 @@
         fd.append("image", image);
         fd.append("content", this.form.content);
         fd.append("likes", this.form.likes);
-        
-        axios.put(`http://localhost:3000/api/messages/modify/${this.form.id}`, fd
+        fd.append("dislikes", this.form.dislikes);
+        axios.put(`http://localhost:3000/api/messages/modify/${this.form.messageId}`, fd
         , {
             headers: {
               "Content-Type": "multipart/form-data", 
