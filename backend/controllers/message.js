@@ -5,7 +5,7 @@ const fs = require('fs');// on importe file system de node pour avoir accès aux
 //constants
 const titleRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,30}$/i;
 const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{0,250}$/i;
-const regexNumber = /^\d+$/;;
+const regexNumber = /^\d+$/;
 const ITEMS_LIMIT   = 50;
 
 
@@ -61,6 +61,7 @@ exports.createMessage = (req, res, next) => {
 
 // GET ALL MESSAGES // récuperer tout les messages
 exports.getAllMessages = (req, res, next ) => {
+  console.log(req.body)
     let fields  = req.query.fields;
     let limit   = parseInt(req.query.limit);
     let offset  = parseInt(req.query.offset);
@@ -163,7 +164,7 @@ exports.modifyMessage = (req, res, next) => {
 exports.deleteMessage =  (req, res, next) => {
 
   db.User.findOne({// on récupère l'user qui fait la requête
-    where: {id: req.body.userId},
+    where: {id: req.params.userId},
   }).then(user => {
       db.Message.findOne({where: { id: req.params.messageId }})// on recupère le message demandé
       .then(message => {

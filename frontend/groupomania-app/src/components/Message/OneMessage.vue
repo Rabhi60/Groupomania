@@ -1,25 +1,28 @@
 <template>
 <div class="container-fluid">
     <!-- Section contenant la navbar et notre h1 -->
-    <section>
+    <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand href="#"> <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse">
         </b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item ><router-link to='/Home/newMessage'>Nouveau message</router-link></b-nav-item>
+            <b-nav-item ><router-link to='/Home/NewMessage'>Nouveau message</router-link></b-nav-item>
             <b-nav-item ><router-link to='/Home/MyProfile' >Mon profil</router-link></b-nav-item>
             <b-nav-item  ><router-link to='/Home' exact >Accueil</router-link></b-nav-item>
             <b-nav-item   @click="deconnexion"  class="deconnexion">Déconnexion</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-      <h1>Message n°{{messageId}}</h1>
-    </section>
+      
+      <b-jumbotron>
+        <h1>Message n°{{messageId}}</h1>
+      </b-jumbotron>
+    </div>
 
     <!-- Section contenant la card message, avec le bouton supprimer, le bouton modifier et le bouton nouveau commentaire -->
-    <section class="col-10 mx-auto  cardMessage " >
+    <section class="col-md-8 mx-auto  cardMessage " >
       <b-card :title="messageUnique.title" :img-src="messageUnique.attachment" img-alt="Image" img-top :header="'by ' + User.username" tag="article"  bg-variant="dark" text-variant="white" class="text-center mb-2 col-12 mx-auto ">
         <b-card-text> 
             {{messageUnique.content}} <!-- contenu texte si ajouté à la création du message  -->
@@ -39,23 +42,19 @@
             </svg>
             <span> {{messageUnique.dislikes}} </span>
           </b-button>
-          
-          
         </div>
-     
-       
       </b-card>
 
        <!-- Bouton pour modifier le message -->
       <router-link :to='`/Home/ModifyMessage/${messageId}`'>
-        <b-button  type="submit" variant="warning" class="col-4 mx-2 my-2" v-if="userId == User.id || isAdmin == 1">Modifier</b-button>
+        <b-button  type="submit" variant="warning" class="col-md-4 mx-2 my-2" v-if="userId == User.id || isAdmin === true">Modifier</b-button>
       </router-link>
 
       <!-- Bouton pour supprimer le message -->
-      <b-button  @click="onSubmit" type="submit" variant="danger" class="col-4 mx-2 my-2" v-if="userId == User.id || isAdmin == 1">Supprimer</b-button>
+      <b-button  @click="onSubmit" type="submit" variant="danger" class="col-md-4 mx-2 my-2" v-if="userId == User.id || isAdmin === true">Supprimer</b-button>
       
       <!-- Bouton pour écrire un nouveau commentaire -->
-      <b-button v-b-modal.modal-prevent-closing>Nouveau commentaire</b-button>
+      <b-button v-b-modal.modal-prevent-closing  class="mx-2">Nouveau commentaire</b-button>
 
        <!-- contient notre modal -->
       <b-modal id="modal-prevent-closing" ref="modal" title="Nouveau commentaire" @show="resetModal" @hidden="resetModal" @ok="handleOk">
@@ -70,13 +69,13 @@
     <section >
       <div  :key="index" v-for="(comment, index) in Comments" class="col-10 col-md-7 mx-auto comment">
         
-      <b-card  :header='comment.User.username'  bg-variant="dark"   text-variant="white" class="text-center mb-2 col-12 mx-auto  ">
-        <router-link :to='`/Home/OneMessage/${messageId}/DeleteComment/${comment.id}`' v-if="userId == comment.User.id || isAdmin == 1">
-          <b-button  variant='danger' class="float-right" >X</b-button>
-        </router-link>
+      <b-card  :header='comment.User.username'  bg-variant="dark"   text-variant="white" class="text-center mb-2 col-md-8 mx-auto  ">
         <b-card-text>
-            {{comment.content}}
+          {{comment.content}}
         </b-card-text>
+        <router-link :to='`/Home/OneMessage/${messageId}/DeleteComment/${comment.id}`' v-if="userId == comment.User.id || isAdmin === true">
+          <b-button  variant='danger' class="float-right " >X</b-button>
+        </router-link>
       </b-card>
 
     </div>
@@ -90,7 +89,8 @@ import axios from 'axios'
 let sessionToken = JSON.parse(localStorage.getItem('session'));
 let userId = JSON.parse(localStorage.getItem('userId'));
 let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
-
+const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,250}$/i;// regex pour le contenu de nos messages
+const regexNumber = /^\d+$/;
 export default {
   name: 'OneMessage',
   data() {
@@ -113,6 +113,10 @@ export default {
     },
   mounted(){
       let self = this;
+       if ( !regexNumber.test(this.messageId) ) {// on vérifie si le contenu est correct
+           this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
+           window.location.replace('/Home')
+        }
     axios.get(`http://localhost:3000/api/messages/${this.messageId}`,
       {headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -129,6 +133,7 @@ export default {
       })
       .catch(function (erreur) {
         console.log(erreur);
+        window.location.reload();
       })
     
   },
@@ -137,7 +142,10 @@ export default {
     onSubmit(evt) {
       evt.preventDefault()
       const self = this;
-      axios.delete(`http://localhost:3000/api/messages/delete/${this.submit.messageId}`,
+      if ( !regexNumber.test(this.submit.messageId) ) {// on vérifie si le contenu est correct
+          return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
+        }
+      axios.delete(`http://localhost:3000/api/messages/delete/${this.submit.messageId}/${userId}`,
         { headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Barer ${sessionToken}`
@@ -174,7 +182,10 @@ export default {
       handleSubmit() {
         // Exit when the form isn't valid
         if (!this.checkFormValidity()) {
-          return alert('Le texte n\'est pas correct');
+          return 
+        }
+        if (!contentRegex.test(this.submit.content) || !regexNumber.test(this.userId) || !regexNumber.test(this.submit.messageId) ) {// on vérifie si le contenu est correct
+         return this.$swal( "Votre contenu doit contenir entre 2 et de 250 caractères !  ", "" , "error");
         }
         axios.post(`http://localhost:3000/api/messages/${this.submit.messageId}/newComment/`,{ userId: this.userId, content: this.submit.comment },
       {headers: {
@@ -194,7 +205,9 @@ export default {
         })
       },
       onLike() {
-       
+       if ( !regexNumber.test(userId) || !regexNumber.test(this.submit.messageId) ) {// on vérifie si le contenu est correct
+         return this.$swal( "Votre requêtes n'est pas correcte !  ", "" , "error");
+        }
         axios.post(`http://localhost:3000/api/messages/${this.submit.messageId}/like`, { userId: userId},
       {headers: {
       
@@ -210,7 +223,9 @@ export default {
       });
       },
       onDislike(){
-         
+         if ( !regexNumber.test(userId) || !regexNumber.test(this.submit.messageId) ) {// on vérifie si le contenu est correct
+         return this.$swal( "Votre requêtes n'est pas correcte !  ", "" , "error");
+        }
           axios.post(`http://localhost:3000/api/messages/${this.submit.messageId}/dislike`, { userId: userId},
       {headers: {
  
@@ -231,37 +246,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h1{
-  margin-top: 2em;
-  font-size: 5rem;
-  font-weight: bold;
-  margin-bottom: 1em;
-}
 img{
   max-height: 50vh;
-}
-.deconnexion{
-  color: red;
-  font-size: 1.2em;
-}
-.router-link-active{
-  color:white;
-   font-weight: bold;
-}
-a{
-    color: grey;
-    font-size: 1.2em;
-    text-decoration: none;
 }
 div{
   padding: 0;
 }
-
 .cardMessage{
   margin-top: 2rem;
-  padding-bottom: 6rem;
+  padding-bottom: 8rem;
 }
 .comment{
  margin : 0 auto 5em auto;
+}
+.container-fluid{
+  margin-bottom: 10rem;
 }
 </style>

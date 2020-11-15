@@ -1,19 +1,20 @@
 const db = require('../models/index');
 
 
+
 // GET All USERS // récuperer tout les utilisateurs
 exports.getAllUsers =  (req, res, next) => {
-
+   
     db.User.findOne({
-        where: {id: req.body.id}
+        where: {id: req.params.userId}
     }).then(user => {
         if(user.isAdmin === true){
             db.User.findAll({
                 attributes: ['username', 'firstname', 'lastname', 'id']
             }).then(users => res.status(200).json({users}))
-            .catch(error => res.status(401).json({error}));
+            .catch(() => res.status(500).json({message: 'Il y a un problème serveur'}));
         } else{
-            return res.status(401).json('accès non autorisée');
+            return res.status(401).json({message:'accès non autorisée'});
         }
         
     }).catch(() => res.status(500).json('problème serveur'))
@@ -23,7 +24,7 @@ exports.getAllUsers =  (req, res, next) => {
 // Delete one user // supprimer un compte utilisateur
 exports.deleteUserProfile = (req, res, next) => {
     db.User.findOne({
-        where: {id: req.body.userId}
+        where: {id: req.params.userId}
     }).then(user => {
         if(user.isAdmin === true){
             db.User.destroy({

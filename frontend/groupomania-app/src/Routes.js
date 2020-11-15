@@ -7,6 +7,12 @@ import ResetPassword from './components/Auth/ResetPassword.vue'
 //Accueil
 import Home from './components/Home/Home.vue'
 
+//La partie Admin
+import AdminHome from './components/Admin/AdminHome.vue'
+import AdminAllUsers from './components/Admin/AdminAllUsers.vue'
+import AdminOneUser from './components/Admin/AdminOneUser.vue'
+
+
 //La partie profile Voir son profile, le modifier ou le supprimer.
 import MyProfile from './components/Profile/MyProfile.vue'
 import ModifyProfile from './components/Profile/ModifyProfile.vue'
@@ -30,6 +36,12 @@ export default [
 
     //Accueil
     {path: '/Home', component: Home},
+
+    //Admin coordonnées/modification/suppression
+    {path: '/Home/AdminHome', component: AdminHome},
+    {path: '/Home/AdminHome/AllUsers', component: AdminAllUsers},
+    {path: '/Home/AdminHome/OneUser/:id', component: AdminOneUser},
+
     
     //Profil coordonnées/modification/suppression
     {path: '/Home/MyProfile', component: MyProfile},

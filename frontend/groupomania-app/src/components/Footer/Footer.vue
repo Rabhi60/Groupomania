@@ -29,11 +29,10 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 3em;
-  line-height: 3em;
+  height: 5.5rem;
+  padding-top: 1rem;
   background: #212121;
   color: white;
- 
-  
+  font-size: 1.5rem;
 }
 </style>

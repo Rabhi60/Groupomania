@@ -3,7 +3,7 @@
 
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-            <b-navbar-brand href="#"> <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+            <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
             <b-navbar-toggle target="navbar-toggle-collapse">
             </b-navbar-toggle>
             <b-collapse id="navbar-toggle-collapse" is-nav>
@@ -19,11 +19,13 @@
     </div>
     
     <div>
-        <b-card bg-variant="dark" text-variant="white" src="../../assets/icon-above-font.png" img-alt="Image groupomania" style="max-width: 80vw;" img-top title="Voir tout les utilisateurs">
+        <b-card bg-variant="dark" text-variant="white" src="../../assets/icon-above-font.png" img-alt="Image groupomania" class="my-5 mx-auto py-5" style="max-width: 80vw;" img-top title="Voir tout les utilisateurs">
             <b-card-text>
                 Veulliez à manipuler les données avec prudences selon les consignes du RGPD.
             </b-card-text>
-            <b-button  variant="success">Valider</b-button>
+            <router-link to="/Home/AdminHome/AllUsers" v-if="isAdmin === true">
+            <b-button  variant="success" >Valider</b-button> 
+            </router-link>
         </b-card>
     </div>
     
@@ -34,14 +36,17 @@
 <script>
 
 
-let sessionToken = JSON.parse(localStorage.getItem('session'));
-let id = JSON.parse(localStorage.getItem('userId'));
+
 let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
 
+
 export default {
-  name: 'AdminHome',
-   data: {
-       
+  name: 'AdminHome', 
+   data() {
+     return{
+        isAdmin: isAdmin
+     }
+  
     },
 
   methods: {

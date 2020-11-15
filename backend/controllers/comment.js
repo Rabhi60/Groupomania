@@ -1,5 +1,5 @@
 const db = require('../models/index');// on importe nos models
-const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{0,250}$/i;// regex pour le contenu de nos messages
+const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,250}$/i;// regex pour le contenu de nos messages
 
 // Logique métier
 
@@ -27,8 +27,9 @@ exports.createComment = (req, res, next) => {
 // GET ONE MESSAGE // on récupère un commentaire avec l'utilisateur qui la créé grace au include
 exports.oneComment =  (req, res, next) => {
     console.log(req.params.commentId);
+    console.log(req.params.userId);
     db.User.findOne({
-        where: {id: req.body.userId},// on récupère l'user dans la base de donnée
+        where: {id: req.params.userId},// on récupère l'user dans la base de donnée
       }).then(user => {
         db.Comment.findOne({ where: { id: req.params.commentId },
             include: [{
@@ -50,7 +51,7 @@ exports.oneComment =  (req, res, next) => {
 // DELETE ONE COMMENT // on supprime un commentaire
 exports.deleteComment = async (req, res, next) => {
     db.User.findOne({
-        where: {id: req.body.userId},// on récupère l'user dans la base de donnée
+        where: {id: req.params.userId},// on récupère l'user dans la base de donnée
       }).then(user => {
         db.Comment.findOne({
             where: { id: req.params.commentId },

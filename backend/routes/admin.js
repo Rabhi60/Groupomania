@@ -5,8 +5,8 @@ const adminCtrl = require('../controllers/admin');// controllers Admin
 
 
 // logique de routine
-router.get('/allUsers', auth, adminCtrl.getAllUsers);// route permettant de récuperer tout les comptes utilisateurs
+router.get('/allUsers/:userId', auth, adminCtrl.getAllUsers);// route permettant de récuperer tout les comptes utilisateurs
 router.put('/updateUser/:id', auth, adminCtrl.updateOneUser);// route permettant de modifier le compte d'utilisateur pour le rendre admin ou non
-router.delete('/deleteUserProfile/:id', auth, adminCtrl.deleteUserProfile);// route qui va permettre de supprimer un compte utilisateur
+router.delete('/deleteUser/:id/:userId', auth, adminCtrl.deleteUserProfile);// route qui va permettre de supprimer un compte utilisateur
 
 module.exports = router;// on exporte notre router
