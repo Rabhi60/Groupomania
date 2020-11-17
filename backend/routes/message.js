@@ -9,7 +9,7 @@ router.post('/new', auth, multer, messagesCtrl.createMessage);// route pour cré
 router.get('/', auth,  messagesCtrl.getAllMessages);// route pour récuperer tout les messages
 router.get('/:messageId', auth, messagesCtrl.getOneMessage);// route pour récuperer un message
 router.put('/modify/:messageId', auth, multer, messagesCtrl.modifyMessage);// route pour modifier un message
-router.delete('/delete/:messageId/:userId', auth, messagesCtrl.deleteMessage);// route pour supprimer un message
+router.delete('/delete/:messageId/', auth, messagesCtrl.deleteMessage);// route pour supprimer un message
 
 
 module.exports = router;// on exporte notre router

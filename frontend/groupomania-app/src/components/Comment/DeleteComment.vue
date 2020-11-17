@@ -57,7 +57,7 @@ export default {
       this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
       window.location.replace('/Home');
     }
-    axios.get(`http://localhost:3000/api/messages/comment/${this.commentId}/${userId}`, 
+    axios.get(`http://localhost:3000/api/messages/comment/${this.commentId}/`, 
       {headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Barer ${sessionToken}`
@@ -79,7 +79,7 @@ export default {
         this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
         window.location.replace('/Home')
       }
-      axios.delete(`http://localhost:3000/api/messages/comment/${this.submit.commentId}/${userId}`,
+      axios.delete(`http://localhost:3000/api/messages/comment/${this.submit.commentId}/`,
       {headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Barer ${sessionToken}`

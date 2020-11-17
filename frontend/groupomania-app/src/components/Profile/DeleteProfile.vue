@@ -24,11 +24,11 @@
     </div>
  
     <!-- section delete, cette section contient un titre h2, un paragraphe, un hr qui permet de faire une séparation et  du bouton pour supprimer le compte -->
-    <section @submit="onSubmit" id='delete' class="col-md-6 mx-auto my-5 " >
+    <section  id='delete' class="col-md-6 mx-auto my-5 " >
         <h2>Supprimer mon compte</h2>
         <p>Etes-vous sûr(e) de vouloir supprimer votre compte ? ;) </p>
         <hr class="col-8">
-        <b-button  type="submit" variant="danger" class="col">Supprimer</b-button>
+        <b-button @click="onSubmit"  type="submit" variant="danger" class="col">Supprimer</b-button>
     </section>
 
     <!-- section image, cette section contient une image  -->
@@ -52,6 +52,11 @@ export default {
           txt:''
        }
     },
+  mounted(){
+      if(userId === undefined){
+      this.$router.push('/')
+    }
+  },
   methods: {
     onSubmit(evt) {
       evt.preventDefault()

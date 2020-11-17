@@ -26,7 +26,11 @@ import OneMessage from './components/Message/OneMessage.vue'
 //La partie suppression des commentaires
 import DeleteComment from './components/Comment/DeleteComment.vue'
 
+//Page 404
+import PageNotFound from './components/PageNotFound/PageNotFound.vue'
+
 //export
+
 //les components sont les fichiers qui vont être le contenu des pages et path contient les routes de leurs urls
 export default [
     //Authentification login et signup
@@ -54,5 +58,9 @@ export default [
     {path: '/Home/OneMessage/:messageId', component: OneMessage},
 
     //Commentaire /suppression
-    {path: '/Home/OneMessage/:messageId/DeleteComment/:commentId', component: DeleteComment}
+    {path: '/Home/OneMessage/:messageId/DeleteComment/:commentId', component: DeleteComment},
+
+    // Page 404 permet de gérer en cas d'url inextistant
+    {path: '*', component: PageNotFound}
+
 ]

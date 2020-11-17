@@ -20,14 +20,14 @@
 
        
       <!-- formulaire de recupération du mot de passe -->
-      <b-form @submit="onSubmit"  class="col-md-8 mx-auto left">
+      <b-form @submit="onSubmit"  class="col-md-8 mx-auto my-5 left">
           <!-- e-mail -->
-          <b-form-group id="email" label="Email:" label-for="email" >
-              <b-form-input v-model="form.email" id="email" type="email" required  pattern="[A-z0-9._+-]+[@]{1}[A-z0-9._-]+[.]{1}[A-z]{2,15}" placeholder="you@example.com"   ></b-form-input>
+          <b-form-group id="Email" label="Email:" label-for="email" >
+              <b-form-input v-model="form.email" id="email" type="email" required placeholder="you@example.com"   ></b-form-input>
           </b-form-group>
 
           <!-- Valider -->
-          <b-button type="submit" variant="success" class="col">Valider</b-button>
+          <b-button type="submit" variant="success" class="col button">Valider</b-button>
       </b-form>
 
 
@@ -76,5 +76,8 @@ div{
 .left{
   text-align: left;
   font-weight: bold;
+}
+.button{
+  font-size: 1.5rem;
 }
 </style>

@@ -1,12 +1,18 @@
 const db = require('../models/index');
-
+const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 
 
 // GET All USERS // récuperer tout les utilisateurs
 exports.getAllUsers =  (req, res, next) => {
    
+    //constante pour controler notre userId
+    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+    const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+    const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé 
+
+    console.log(userId)
     db.User.findOne({
-        where: {id: req.params.userId}
+        where: {id: userId}
     }).then(user => {
         if(user.isAdmin === true){
             db.User.findAll({
@@ -23,8 +29,14 @@ exports.getAllUsers =  (req, res, next) => {
 
 // Delete one user // supprimer un compte utilisateur
 exports.deleteUserProfile = (req, res, next) => {
+    
+    //constante pour controler notre userId
+    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+    const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+    const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé 
+
     db.User.findOne({
-        where: {id: req.params.userId}
+        where: {id: userId}
     }).then(user => {
         if(user.isAdmin === true){
             db.User.destroy({
@@ -41,8 +53,14 @@ exports.deleteUserProfile = (req, res, next) => {
 
 // Update One User // changer un utilisatuer en admin ou le mettre non admin
 exports.updateOneUser =  (req, res, next) => {
+
+    //constante pour controler notre userId
+    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+    const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+    const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé 
+
     db.User.findOne({
-        where: {id: req.body.userId}
+        where: {id: userId}
     }).then(user => {
         if(user.isAdmin === true){
             db.User.update({

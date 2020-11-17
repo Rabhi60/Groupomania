@@ -1,6 +1,6 @@
 const db = require('../models/index');// on importe nos models
-const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,250}$/i;// regex pour le contenu de nos messages
-
+const contentRegex = /^[a-zÀ-ÿ\d\-.':);,!\s]{0,250}$/i;// regex pour le contenu de nos messages
+const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 // Logique métier
 
 exports.createComment = (req, res, next) => {
@@ -9,7 +9,7 @@ exports.createComment = (req, res, next) => {
     if (!contentRegex.test(req.body.content)) {// on vérifie si le contenu est correct
       return res.status(400).json({ 'error': 'Votre contenu ne peut contenir plus de 250 caractères' });
     }
-          
+    
     db.Message.findOne({where: { id: req.params.messageId }})// on récupère le message pour lui ajouter un commentaire
     .then(message => {
         db.Comment.create({
@@ -28,8 +28,13 @@ exports.createComment = (req, res, next) => {
 exports.oneComment =  (req, res, next) => {
     console.log(req.params.commentId);
     console.log(req.params.userId);
+    
+    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+    const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+    const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé
+
     db.User.findOne({
-        where: {id: req.params.userId},// on récupère l'user dans la base de donnée
+        where: {id: userId},// on récupère l'user dans la base de donnée
       }).then(user => {
         db.Comment.findOne({ where: { id: req.params.commentId },
             include: [{
@@ -50,8 +55,13 @@ exports.oneComment =  (req, res, next) => {
 
 // DELETE ONE COMMENT // on supprime un commentaire
 exports.deleteComment = async (req, res, next) => {
+
+    const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+    const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+    const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé
+    
     db.User.findOne({
-        where: {id: req.params.userId},// on récupère l'user dans la base de donnée
+        where: {id: userId},// on récupère l'user dans la base de donnée
       }).then(user => {
         db.Comment.findOne({
             where: { id: req.params.commentId },

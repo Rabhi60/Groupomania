@@ -103,8 +103,8 @@ exports.login = function(req, res, next) {
 
 
   // Delete profile // suppression d'un compte utilisateur 
-  exports.deleteUserProfile = async (req, res, next) => {
-      await db.User.destroy({// permet de supprimer
+  exports.deleteUserProfile = (req, res, next) => {
+    db.User.destroy({// permet de supprimer
         where: { id: req.params.id }
         
       }).then(() => res.status(200).json({message: 'User supprimée!'}))// code 200 nous indique que c'est ok, le compte a été supprimé

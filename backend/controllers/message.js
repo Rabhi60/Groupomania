@@ -1,6 +1,6 @@
 const db = require('../models/index');
 const fs = require('fs');// on importe file system de node pour avoir accès aux différentes opérations liées fichiers
-
+const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 
 //constants
 const titleRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,30}$/i;
@@ -95,7 +95,7 @@ exports.getOneMessage = (req, res, next) => {
         attributes: ['id','userId'],
       }] 
     },{ model: db.Comment,
-    attributes: [ 'id','content'],  include: [{
+    attributes: [ 'id','content', 'createdAt'],  include: [{
       model: db.User,
       attributes: ['id','username'],
     }] 
@@ -163,8 +163,12 @@ exports.modifyMessage = (req, res, next) => {
 // DELETE MESSAGE // supprimer un message
 exports.deleteMessage =  (req, res, next) => {
 
+  const token = req.headers.authorization.split(' ')[1];// on va recuperer notre token qui est en deuxième élèment du tableau donc 1 et le bearer en 0
+  const decodedToken = jwt.verify(token, 'XyJ__L9_VU2qMq8E7r_d__428_JRz9_vv7Uz4wVX_V__5eqE__s6829_tzB');// on va décoder le token, donc on verifie le token et en deuximème argument la clé secrète
+  const userId = decodedToken.userId;// on souhaite récuperer l'userId qu'on a encodé 
+
   db.User.findOne({// on récupère l'user qui fait la requête
-    where: {id: req.params.userId},
+    where: {id: userId},
   }).then(user => {
       db.Message.findOne({where: { id: req.params.messageId }})// on recupère le message demandé
       .then(message => {
@@ -172,7 +176,7 @@ exports.deleteMessage =  (req, res, next) => {
           const filename = message.attachment.split('/images/')[1];// on extrait le nom du fichier à supprimer
           fs.unlink(`images/${filename}`, () => {// fs.unlink permet de supprimer le fichier, après on a le chemin du fichier entre paranthèse
             db.Message.destroy({
-                where: { id: req.params.id }
+                where: { id: req.params.messageId }
                 
               }).then(() => res.status(200).json({message: 'Message supprimé!'}))// le message est supprimé
                 .catch(error => res.status(400).json({error}));// le contenu n'est pas correct

@@ -1,58 +1,71 @@
 <template>
+  <!-- notre template de base pour toute notre appli web id='app'-->
   <div id="app">
+    <!-- view-router va nous permettre de faire passer nos différentes pages  -->
     <router-view></router-view>
+    <!-- footer-bottom sera notre footer pour toute notre application -->
     <footer-bottom></footer-bottom>
   </div>
 </template>
 
+
 <script>
+//on importe notre footer pour notre template
 import Footer from './components/Footer/Footer'
 
+//on met le nom de notre composant qui sera ajouté a notre template
 export default {
-  name: 'App',
+  name: 'App',// le nom de notre composant 
   components: {
     'footer-bottom' : Footer,
-  
-    
   }
 }
 </script>
 
+<!-- Notre style qui s'applique pour toute nos pages -->
 <style lang="scss">
+html, body{
+  font-size: 62.5%;
+}
 #app {
-  html, body{
-    font-size: 62.5%;
-  }
+ 
+  
+
   h1{
-  margin-top: 4rem;
-  font-size: 3.8rem;
+  margin-top: 6rem;
+  font-size: 4rem;
   font-weight: bold;
   margin-bottom: 1rem;
   }
+
   h2{
   margin-top: 1em;
-  font-size: 2.1rem;
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1em;
   text-align: center;
   }
+
   p{
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-align: center;
-  font-weight: bold;
   }
+
   .router-link-active{
   color:white;
    font-weight: bold;
   }
-  a{
+
+  a, .deconnexion{
     color: grey;
-    font-size: 1.2em;
+    font-size: 1.5em;
     text-decoration: none;
   }
+
   #image{
-    margin-bottom: 6rem;
+    margin-bottom: 8rem;
   }
+  
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

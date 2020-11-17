@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid footer">
-   <p> {{ copyright }} </p>
+   <h3> {{ copyright }} </h3>
   </div>
 </template>
 

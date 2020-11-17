@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+    <!-- div qui contient notre navbar et notre titre important h1 -->
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
         <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
@@ -12,11 +13,13 @@
         </b-collapse>
       </b-navbar>
   
+      <!-- jumbotron met le contenu dans un background gris -->
       <b-jumbotron  >
           <h1 >Compte Admin</h1>
       </b-jumbotron>
     </div>
  
+    <!-- Section qui permet de modifier le rôle d'un utilisateur en admin ou de perdre ce rôle -->
     <section id='modify' class="col-md-10 mx-auto my-5 ">
       <h2>Modifier le compte</h2>
 
@@ -32,18 +35,17 @@
         <!-- Valider -->
         <b-button type="submit" variant="warning" class="col button">Modifier</b-button>
       </b-form>
-
-      
-     
     </section>
 
+    <!-- hr permet la séparation avec un trait des élèments -->
     <hr class="col-8">
 
+    <!-- section delete, permet de supprimer le compte d'un utilisateur -->
     <section id="delete">
       <h2>Supprimer le compte</h2>
 
       <!-- Bouton pour supprimer le message -->
-      <b-button  @click="onDelete" type="submit" variant="danger" class="col-4 mx-2 my-2 button" >Supprimer</b-button>
+      <b-button  @click="onDelete" type="submit" variant="danger" class="col-6 mx-2 my-2 button" >Supprimer</b-button>
     </section>
   </div>
 </template>
@@ -61,17 +63,24 @@ export default {
       return {
         form: {
             isAdmin: '',
+            id: this.$route.params.id,
         }
       }
     },
+  mounted(){// on vérifie si un utilisateur est connecté sinon on le renvoie vers la connexion
+     if(userId === undefined){
+      this.$router.push('/')
+    }
+  },  
   methods: {
     onDelete(evt) {
       evt.preventDefault()
       const self = this;
-      if( !regexNumber.test(this.params.id) || !regexNumber.test(userId) ){
+      if( !regexNumber.test(this.form.id) || !regexNumber.test(userId) ){
            return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
         }
-      axios.delete(`http://localhost:3000/api/messages/deleteUser/${this.params.id}/${userId}`, 
+        // requête pour supprimer un compte
+      axios.delete(`http://localhost:3000/api/admin/deleteUser/${this.form.id}`, 
         { headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Barer ${sessionToken}`
@@ -79,11 +88,11 @@ export default {
       .then(function (response) {
         //On traite la suite une fois la réponse obtenue 
         console.log(response);
-        self.$router.push('/AdminHome');
+        self.$router.push('/Home/AdminHome');
       })
-      .catch(function (erreur) {
+      .catch(function (response) {
         //On traite ici les erreurs éventuellement survenues
-        console.log(erreur);
+        console.log(response);
       });
     },
     onSubmit(evt) {
@@ -114,7 +123,7 @@ export default {
         return this.$swal( "le champ Admin est incorrect !  ", "" , "error");
       }
     },
-    deconnexion: function(){
+    deconnexion: function(){//Permet de supprimer les données de connexion de renvoyer l'utilisateur vers la page de connexion
         localStorage.clear();
         this.$router.push('/');
     }
@@ -134,6 +143,7 @@ p{
 }
 .button{
   font-weight: bold;
+  font-size: 2rem;
 }
 .left{
     text-align: left;

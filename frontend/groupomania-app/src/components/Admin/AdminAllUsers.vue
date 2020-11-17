@@ -16,17 +16,18 @@
       <b-jumbotron>
         <h1>Compte Admin</h1>
       </b-jumbotron>
+      <h2>Tout les comptes utilisateurs :</h2>
     </div>
     
 
     <!-- pour chaque utilisateur on a ses données -->
-    <div :key="index" v-for="(user, index) in users " class="col-10 col-md-7 mx-auto my-5" >
+    <div :key="index" v-for="(user, index) in users " class="col-10 col-md-8 mx-auto my-5 h3" >
         <b-card 
         :header='user.username'
         tag="article"
         bg-variant="dark" 
         text-variant="white" 
-        class="text-center mb-2 col-12 mx-auto"
+        class="text-center mb-2  mx-auto"
         >
             <!-- On a dans le nom et prénom de l'utilisateur s'ils ont été renseigner -->
             <b-card-text>
@@ -37,7 +38,7 @@
        
         <!-- Bouton pour aller dans la page avec un utilisateur -->
         <router-link :to='`/Home/AdminHome/OneUser/${user.id}`'>
-            <b-button  type="submit" variant="warning" class="col-md-6  my-2 button" >Modifier ou Supprimer</b-button>
+            <b-button  type="submit" variant="warning" class="  my-2 button" >Modifier ou Supprimer</b-button>
         </router-link>
     </div>
    
@@ -53,7 +54,7 @@ let userId = JSON.parse(localStorage.getItem('userId'));
 
 export default {
   name: 'Home',
-   data() {
+  data() {
        return{
           users: [],
           userId: userId
@@ -61,9 +62,11 @@ export default {
     },
   
   mounted(){
-      let self = this;
-
-    axios.get(`http://localhost:3000/api/admin/allUsers/${userId}`, 
+    let self = this;
+     if(userId == undefined){
+      this.$router.push('/')
+    }
+    axios.get(`http://localhost:3000/api/admin/allUsers`, 
       {headers: {
    
       'Authorization': `Barer ${sessionToken}`
@@ -95,6 +98,7 @@ img{
 }
 .button{
   font-weight: bold;
+  font-size: 2rem;
 }
 div{
   padding: 0;
@@ -102,4 +106,4 @@ div{
 .container-fluid{
   margin-bottom: 8rem;
 }
-</style>
+</style> 

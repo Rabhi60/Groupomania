@@ -42,7 +42,7 @@
 
           <!-- password -->
           <b-form-group id="Password" label="Password" label-for="password">
-              <b-form-input type="password" id="password" aria-describedby="password-help-block"  v-model="form.password" required></b-form-input>
+              <b-form-input type="password" id="password" aria-describedby="password-help-block"  placeholder='********' v-model="form.password" required></b-form-input>
               <b-form-text id="password-help-block">
                   Votre mot de passe doit contenir au moins 8 caractères, 1 lettre en minuscule, 1 lettre en majuscule, 2 chiffres, 
                   ne doit pas contenir d'espaces, de caractères spéciaux, ou d'emoji.
@@ -50,7 +50,7 @@
           </b-form-group>
 
           <!-- Valider -->
-          <b-button type="submit" variant="success" class="col">Valider</b-button>
+          <b-button type="submit" variant="success" class="col button">Valider</b-button>
       </b-form>
    </div>
   
@@ -135,5 +135,10 @@ div{
   text-align: left;
   font-weight: bold;
 }
-
+.container-fluid{
+  margin-bottom: 8rem;
+}
+.button{
+  font-size: 1.5rem;
+}
 </style>

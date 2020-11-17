@@ -14,7 +14,8 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-  
+
+      <!-- jumbotron met le contenu dans un background gris -->
       <b-jumbotron  >
         <h1 >Modifier mon profil</h1>
       </b-jumbotron>
@@ -89,6 +90,11 @@ export default {
         }
       }
     },
+  mounted(){
+      if(userId == undefined){
+      this.$router.push('/')
+    }
+  },
   methods: {
     
     onSubmit(evt) {

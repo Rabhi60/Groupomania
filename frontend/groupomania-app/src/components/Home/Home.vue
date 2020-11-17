@@ -44,6 +44,7 @@
         <b-card-text>
             {{message.content}}
         </b-card-text>
+        <span>{{message.createdAt | moment("from", "now")}}</span>
       </b-card>
        </router-link>
     </div>
@@ -55,11 +56,11 @@
 //on importe axios pour les requêtes 
 import axios from 'axios'
 
-// on récupère les données dans le localStorage pour maintenir la connexion et faire des vérification côté client
+// on récupère les données dans le localStorage pour maintenir la connexion 
 let sessionToken = JSON.parse(localStorage.getItem('session'));
 let userId = JSON.parse(localStorage.getItem('userId'));
 let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
- const regexNumber = /^\d+$/;
+
 
 export default {
   name: 'Home',
@@ -73,9 +74,8 @@ export default {
   
   mounted(){// mounted permet avant la création de la page de faire la requête pour récuperer les données de l'utilisateur et les messages
       let self = this;
-      if ( !regexNumber.test(userId) ) {// on vérifie si le contenu est correct
-         return this.$swal( "Votre requêtes n'est pas correcte !  ", "" , "error");
-        }
+     
+      
     axios.get(`http://localhost:3000/api/users/me/${userId}`,// axios nous permet de faire des requêtes, ici nous avons des requêtes get pour récuperer(ou Lire/Read)
       {headers: {
       'Authorization': `Barer ${sessionToken}`//nous envoyons notre token
@@ -100,7 +100,13 @@ export default {
         console.log(erreur);
         window.location.reload();
       })
-    
+      
+      
+  },
+  created(){
+    if(userId === undefined){
+        this.$router.push('/')
+      } 
   },
   methods: {// methods va nous permettre de mettre des fonctions pour l'executer au momment voulu, ici lors de la déconnexion
     deconnexion: function(){

@@ -5,7 +5,7 @@ const commentCtrl = require('../controllers/comment');// on importe notre contro
 
 //logique de routine
 router.post('/:messageId/newComment', auth, commentCtrl.createComment);// route pour créé un commentaire
-router.get('/comment/:commentId/:userId', auth, commentCtrl.oneComment);// route pour récuperer un commentaire
-router.delete('/comment/:commentId/:userId', auth, commentCtrl.deleteComment);//route pour supprimer un commentaire
+router.get('/comment/:commentId', auth, commentCtrl.oneComment);// route pour récuperer un commentaire
+router.delete('/comment/:commentId', auth, commentCtrl.deleteComment);//route pour supprimer un commentaire
 
 module.exports = router;// on exporte notre router

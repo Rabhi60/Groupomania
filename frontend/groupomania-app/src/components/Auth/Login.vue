@@ -35,7 +35,7 @@
       </b-form-group>
 
       <!-- Valider le formulaire de connexion-->
-      <b-button type="submit" variant="success" class="col">Valider</b-button>
+      <b-button type="submit" variant="success" class="col button">Valider</b-button>
     </b-form>
 
     <!-- hr permet de faire une séparation  -->
@@ -113,5 +113,7 @@ div{
   text-align: left;
   font-weight: bold;
 }
-
+.button{
+  font-size: 1.5rem;
+}
 </style>

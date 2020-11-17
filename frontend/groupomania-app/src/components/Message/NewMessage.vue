@@ -13,6 +13,7 @@
           </b-collapse>
         </b-navbar>
         
+        <!-- jumbotron met le contenu dans un background gris -->
         <b-jumbotron  >
           <h1 >Nouveau Message</h1>
         </b-jumbotron>
@@ -45,7 +46,7 @@
   let userId = JSON.parse(localStorage.getItem('userId'));
   let image = 'undefined';
   const titleRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,30}$/i;
-  const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{0,250}$/i;
+  const contentRegex = /^[a-zÀ-ÿ\d\-.':);,!\s]{0,250}$/i;
   const regexNumber = /^\d+$/;
 
   export default {
@@ -62,6 +63,11 @@
         }
       }
     },
+  mounted(){
+     if(userId === undefined){
+      this.$router.push('/')
+    }
+  },
   methods: {
     onImageChange(e){// Dès qu'il y a un changement dans l'input image on récupère les nouvelles données
         console.log(e.target.files[0]);
@@ -101,9 +107,9 @@
          console.log(reponse);
         self.$router.push('/Home');
       })
-      .catch(function (erreur) {
+      .catch(function (response) {
         //On traite ici les erreurs éventuellement survenues
-        console.log(erreur);
+        console.log(response);
       });
     },
     deconnexion: function(){
