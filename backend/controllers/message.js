@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 
 //constants
 const titleRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,30}$/i;
-const contentRegex = /^[a-zÀ-ÿ\d\-.'!\s]{0,250}$/i;
+const contentRegex = /^[a-zÀ-ÿ\d\-.',!:)\s]{0,250}$/i;
 const regexNumber = /^\d+$/;
 const ITEMS_LIMIT   = 50;
 
@@ -72,7 +72,7 @@ exports.getAllMessages = (req, res, next ) => {
     }
     
     db.Message.findAll({
-      order: [(order != null) ? order.split(':') : ['title', 'ASC']],
+      order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
       attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
       limit: (!isNaN(limit)) ? limit : null,
       offset: (!isNaN(offset)) ? offset : null,
@@ -150,7 +150,7 @@ exports.modifyMessage = (req, res, next) => {
             .catch(() => res.status(400).json({ 'error': 'contenu invalide' }));// le contenu n'est pas correcte
           }
       } else {// si ce n'est pas l'user ou l'admin on envoie un code 401
-        return res.status(401).json('Accès non autorisé !')
+        return res.status(403).json('Accès non autorisé !')
       }
         
     })// on envoie un code 500 dû a une erreur serveur ou le message n'éxiste pas
@@ -182,7 +182,7 @@ exports.deleteMessage =  (req, res, next) => {
                 .catch(error => res.status(400).json({error}));// le contenu n'est pas correct
             });
         } else { // si ce n'est pas l'user ou l'admin on envoie un code 401
-          return res.status(401).json('Accès non autorisé !')
+          return res.status(403).json('Accès non autorisé !')
         }
       })// on envoie un code 500 dû a une erreur serveur ou le message n'éxiste pas
       .catch(error => res.status(500).json({ error }));

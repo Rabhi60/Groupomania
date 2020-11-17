@@ -20,7 +20,7 @@ exports.getAllUsers =  (req, res, next) => {
             }).then(users => res.status(200).json({users}))
             .catch(() => res.status(500).json({message: 'Il y a un problème serveur'}));
         } else{
-            return res.status(401).json({message:'accès non autorisée'});
+            return res.status(403).json({message:'accès non autorisée'});
         }
         
     }).catch(() => res.status(500).json('problème serveur'))
@@ -42,9 +42,9 @@ exports.deleteUserProfile = (req, res, next) => {
             db.User.destroy({
                 where: { id: req.params.id }
               }).then(() => res.status(200).json({message: 'User supprimée!'}))
-                .catch(error => res.status(401).json({error}));
+                .catch(error => res.status(400).json({error}));
         } else{
-            return res.status(401).json('accès non autorisée');
+            return res.status(403).json('accès non autorisée');
         }
         
     }).catch(() => res.status(500).json('problème serveur'));
@@ -64,14 +64,15 @@ exports.updateOneUser =  (req, res, next) => {
     }).then(user => {
         if(user.isAdmin === true){
             db.User.update({
-                where: {id: req.params.id},
-                isAdmin: req.body.isAdmin
+               
+                isAdmin: req.body.isAdmin},
+                {where: {id: req.params.id},
 
             }).then(() => res.status(200).json({message: 'User modifiée!'}))
-            .catch(error => res.status(401).json({error}));
+            .catch(error => res.status(400).json({error}));
            
         } else{
-            return res.status(401).json('accès non autorisée');
+            return res.status(403).json('accès non autorisée');
         }
         
     }).catch(() => res.status(500).json('problème serveur'));

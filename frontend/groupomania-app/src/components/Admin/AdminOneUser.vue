@@ -98,30 +98,30 @@ export default {
     onSubmit(evt) {
       evt.preventDefault()
       const self = this;
-      if(this.form.isAdmin == 0 || this.form.isAdmin == 1 || this.form.isAdmin === true || this.form.isAdmin === false ){
-        axios.put(`http://localhost:3000/api/admin/updateUser/${this.params.id}/`,{
+      if(this.form.isAdmin == 0 || this.form.isAdmin == 1){
+        axios.put(`http://localhost:3000/api/admin/updateUser/${this.form.id}`,{
           userId: userId,
           isAdmin: this.form.isAdmin
         },
         {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+         
           'Authorization': `Barer ${sessionToken}` 
         }})
         .then(function (response) {
           //On traite la suite une fois la réponse obtenue 
           console.log(response);
-          self.$router.push('/AdminHome')
-          
-    
+          self.$router.push('/Home/AdminHome')
         })
         .catch(function (erreur) {
           //On traite ici les erreurs éventuellement survenues
           console.log(erreur);
         });
       } else {
-        return this.$swal( "le champ Admin est incorrect !  ", "" , "error");
+        return this.$swal( "Votre champ Admin n'est pas correct !  ", "" , "error");// la requête ne peut contenir que des chiffres
       }
+        
+     
     },
     deconnexion: function(){//Permet de supprimer les données de connexion de renvoyer l'utilisateur vers la page de connexion
         localStorage.clear();

@@ -27,7 +27,7 @@
 
       <!-- la partie password du formilaire de connexion-->
       <b-form-group id="input-group-2" label="Password" label-for="password">
-        <b-form-input type="password" id="password" aria-describedby="password-help-block"  v-model="form.password" required></b-form-input>
+        <b-form-input type="password" id="password" aria-describedby="password-help-block" placeholder='********' v-model="form.password" required></b-form-input>
         <b-form-text id="password-help-block">
           Votre mot de passe doit contenir au moins 8 caractères, 1 lettre en minuscule, 1 lettre en majuscule, 2 chiffres, 
           ne doit pas contenir d'espaces, de caractères spéciaux, ou d'emoji.

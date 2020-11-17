@@ -85,6 +85,7 @@
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
+        const self = this;
         if (!titleRegex.test(this.form.title)) {// regex pour avoir un titre qui contient entre 2 et 30 caractères
             return this.$swal( "Votre titre doit faire entre 2 et 30 caractères !  ", "" , "error");
         }
@@ -114,6 +115,7 @@
         .then(function (reponse) {
           //On traite la suite une fois la réponse obtenue 
           console.log(reponse);
+          self.$router.push('/Home');
         })
         .catch(function (erreur) {
           //On traite ici les erreurs éventuellement survenues

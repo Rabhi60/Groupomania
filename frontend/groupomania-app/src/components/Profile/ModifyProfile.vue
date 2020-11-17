@@ -100,13 +100,13 @@ export default {
     onSubmit(evt) {
       evt.preventDefault()
       const self = this;
-      if(!nameRegex.test(this.form.username)|| !nameRegex.test(this.form.firstname) || !nameRegex.test(this.form.lastname) || !nameRegex.test(userId)) {// nameRegex permet de vérifier les caractères utilisés
+      if(!nameRegex.test(this.form.username)|| !nameRegex.test(this.form.firstname) || !nameRegex.test(this.form.lastname)) {// nameRegex permet de vérifier les caractères utilisés
         return this.$swal("un ou plusieurs champs suivant ne sont pas rempli correctement : ",  "nom, prenom, pseudo" , "error"); 
     }
     if (!passwordRegex.test(this.form.password) || !emailRegex.test(this.form.email)) {// email validator permet d'accepter un mail valide, idem pour le regex
       return this.$swal("un ou plusieurs champs suivant ne sont pas rempli correctement : ", "email, password" ,  "error");       
     }
-    if(this.form.isAdmin == 0 || this.form.isAdmin == 1 || this.form.isAdmin === true || this.form.isAdmin === false ){
+    if(isAdmin == 0 || isAdmin == 1 || isAdmin === true || isAdmin === false ){
       axios.put('http://localhost:3000/api/users/me/',{
         id: userId,
         email: this.form.email,

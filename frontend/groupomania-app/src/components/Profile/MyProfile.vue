@@ -12,7 +12,7 @@
             <b-nav-item ><router-link to='/Home/MyProfile' >Mon profil</router-link></b-nav-item>
             <b-nav-item ><router-link to='/Home/ModifyProfile' >Modifier mon profil</router-link></b-nav-item>
             <b-nav-item ><router-link to='/Home/DeleteProfile' >Supprimer mon profil</router-link></b-nav-item>
-            <b-nav-item  >Déconnexion</b-nav-item>
+            <b-nav-item class="deconnexion" >Déconnexion</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

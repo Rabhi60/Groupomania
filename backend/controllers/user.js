@@ -69,7 +69,7 @@ exports.login = function(req, res, next) {
     .catch(error => res.status(500).json({ error: 'Internal Server Error' }));// erreur serveur 500 
 };
 
-  // Get Profile // on 
+  // Get Profile // on récupère notre profil
   exports.getUserProfile =  (req, res, next) => {
   
 
