@@ -16,7 +16,8 @@
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-moment": "^4.1.0",
-    "vue-router": "^3.4.8"
+    "vue-router": "^3.4.8",
+    "vue-sweetalert2": "^4.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
