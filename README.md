@@ -10,10 +10,10 @@ Application web / Réseau social
 5 - Installez MAMP, mettez le en marche en appuyant sur le bouton vert. Ouvrez un terminal et tapez `cd C:\`, tapez de nouveau `..\\MAMP\bin\mysql\bin\mysql -u root -p`   
 6 - Entrez `root` comme mot de passe puis vous allez avoir `mysql>` (qui est le terminal mysql)   
 7 - Creation des database (toujours dans le terminal mysql) :   
-    1 - Tapez `create database database_developdatabase_development;`   
-    2 - Tapez `create database database_developdatabase_test;`   
-    3 - Tapez `create database database_developdatabase_production;`  
-    4 - Quittez le terminal en tappant `exit` puis sur la touche entrer.  
+  - Tapez `create database database_developdatabase_development;`   
+  - Tapez `create database database_developdatabase_test;`   
+  - Tapez `create database database_developdatabase_production;`  
+  - Quittez le terminal en tappant `exit` puis sur la touche entrer.  
 
 8 - Ouvrez un nouveau terminal sur le dossier projet puis tapez `cd backend`.  
 9 - Tapez `npm i`  
