@@ -5,11 +5,11 @@ Application web / Réseau social
 ## Installation du Projet
 1 - Téléchargez le repo   
 2 - Extraire le dossier et mettez le projet à la racine du dossier.   
-3 - Créez un dossier config en plaçant le fichier qui ce trouve dans le livrable, puis placez le à la racine du dossier backend.   
+3 - Créez un dossier config en plaçant le fichier qui se trouve dans le livrable, puis placez-le à la racine du dossier backend.   
 4 - Téléchargez MAMP : `https://www.mamp.info/en/downloads/`   
 5 - Installez MAMP, mettez le en marche en appuyant sur le bouton vert. Ouvrez un terminal et tapez `cd C:\`, tapez de nouveau `..\\MAMP\bin\mysql\bin\mysql -u root -p`   
 6 - Entrez `root` comme mot de passe puis vous allez avoir `mysql>` (qui est le terminal mysql)   
-7 - Creation des database (toujours dans le terminal mysql) :   
+7 - Création des database (toujours dans le terminal mysql) :   
   - Tapez `create database database_developdatabase_development;`   
   - Tapez `create database database_developdatabase_test;`   
   - Tapez `create database database_developdatabase_production;`  
