@@ -1,8 +1,9 @@
 <template>
   <div class="container-fluid">
+    <!-- div qui contient notre navbar et notre titre important h1 -->
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand > <router-link to='/Home' ><img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</router-link></b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse"></b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
@@ -20,7 +21,8 @@
         <h1 >Modifier mon profil</h1>
       </b-jumbotron>
     </div>
- 
+
+    <!-- section modify qui contient notre formulaire pour modifier notre profil -->
     <section id='modify' class="col-md-8 mx-auto my-5">
       <h2>Modifier mes coordonnées</h2>
   
@@ -62,6 +64,7 @@
       <hr class="col-8">
     </section>
        
+    <!-- section image  -->
     <section id="image" >
       <img src="../../assets/edit.png" width='300' alt="image d'un crayon qui signifie la modification ">
     </section>
@@ -69,17 +72,16 @@
 </template>
 
 <script>
+// on importe axios pour  nos requêtes 
 import axios from 'axios'
-let sessionToken = JSON.parse(localStorage.getItem('session'));
-let userId = JSON.parse(localStorage.getItem('userId'));
-let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+
 //regex pour le contrôle des inputs côté client
 const nameRegex = /^[a-zÀ-ÿ\d\-.'\s]{2,30}$/i;
 const emailRegex    = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.{2,}\d)([-+!*$@%_\w]{8,100})$/;
 export default {
-  name: 'ModifyProfile',
-   data() {
+  name: 'ModifyProfile',// nom de la page
+   data() {//données
       return {
         form: {
             email: '',
@@ -87,11 +89,18 @@ export default {
             firstname: '',
             lastname: '',
             password: '',
+            userId: null,
+            isAdmin: false,
+            sessionToken: null,
         }
       }
     },
   mounted(){
-      if(userId == undefined){
+    // constantes qui contiennent nos données
+    this.form.sessionToken = JSON.parse(localStorage.getItem('session'));
+    this.form.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+    this.form.userId = JSON.parse(localStorage.getItem('userId'));// on vérifie si l'utilisateur est connecté
+      if(this.form.userId === undefined || this.form.userId === null){
       this.$router.push('/')
     }
   },
@@ -102,46 +111,48 @@ export default {
       const self = this;
       if(!nameRegex.test(this.form.username)|| !nameRegex.test(this.form.firstname) || !nameRegex.test(this.form.lastname)) {// nameRegex permet de vérifier les caractères utilisés
         return this.$swal("un ou plusieurs champs suivant ne sont pas rempli correctement : ",  "nom, prenom, pseudo" , "error"); 
-    }
-    if (!passwordRegex.test(this.form.password) || !emailRegex.test(this.form.email)) {// email validator permet d'accepter un mail valide, idem pour le regex
-      return this.$swal("un ou plusieurs champs suivant ne sont pas rempli correctement : ", "email, password" ,  "error");       
-    }
-    if(isAdmin == 0 || isAdmin == 1 || isAdmin === true || isAdmin === false ){
-      axios.put('http://localhost:3000/api/users/me/',{
-        id: userId,
-        email: this.form.email,
-        username: this.form.username, 
-        firstname: this.form.firstname, 
-        lastname: this.form.lastname, 
-        password: this.form.password, 
-        isAdmin: isAdmin,
-      },
-      {
-  headers: {
-    'Authorization': `Barer ${sessionToken}` 
-  }})
-      .then(function (response) {
+      }
+      if (!passwordRegex.test(this.form.password) || !emailRegex.test(this.form.email)) {// email validator permet d'accepter un mail valide, idem pour le regex
+        return this.$swal("un ou plusieurs champs suivant ne sont pas rempli correctement : ", "email, password" ,  "error");       
+      }
+      if(this.form.isAdmin == 0 || this.form.isAdmin == 1 || this.form.isAdmin === true || this.form.isAdmin === false ){
+        axios.put('http://localhost:3000/api/users/me/',{
+          id: this.form.userId,
+          email: this.form.email,
+          username: this.form.username, 
+          firstname: this.form.firstname, 
+          lastname: this.form.lastname, 
+          password: this.form.password, 
+          isAdmin: this.form.isAdmin,
+        },
+        {
+        headers: {
+          'Authorization': `Barer ${this.form.sessionToken}` 
+        }})
+        .then(function (response) {
         //On traite la suite une fois la réponse obtenue 
         console.log(response);
+        self.$swal("Compte modifié :) ", " " , "success");
         self.$router.push('/Home')
-      })
-      .catch(function (erreur) {
+        })
+        .catch(function (erreur) {
         //On traite ici les erreurs éventuellement survenues
         console.log(erreur);
-      });
-     } else {
+        });
+      } else {// si le champs est incorrect on envoie une erreur
         return this.$swal( "le champ Admin est incorrect !  ", "" , "error");
-     }
+      }
     },
-    deconnexion: function(){
-        localStorage.clear();
-        this.$router.push('/');
+
+    deconnexion: function(){//Permet de supprimer les données de connexion et de renvoyer l'utilisateur vers la page de connexion
+      localStorage.clear();
+      this.$router.push('/');
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- la partie style nous permet de modifier le style css/scss, scoped nous permet d'excuter ce code en sur cette page seulement  -->
 <style scoped lang="scss">
 
 div{
@@ -152,13 +163,15 @@ p{
 }
 .left{
   text-align: left;
+  font-size: 1.5rem;
 }
 
 #button{
   font-weight: bold;
+  font-size: 1.5rem;
 }
 #password-help-block{
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 #Password, #Lastname, #Firstname, #Username, #Email{

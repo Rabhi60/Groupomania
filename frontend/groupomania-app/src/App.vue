@@ -27,9 +27,10 @@ export default {
 html, body{
   font-size: 62.5%;
 }
+
 #app {
  
-  
+
 
   h1{
   margin-top: 6rem;
@@ -57,15 +58,21 @@ html, body{
   }
 
   a, .deconnexion{
-    color: grey;
+    color: rgb(196, 180, 180);
     font-size: 1.5em;
     text-decoration: none;
+   
   }
 
   #image{
     margin-bottom: 8rem;
   }
   
+  input{
+  height: 4rem;
+  font-size: 2rem;
+  }
+
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

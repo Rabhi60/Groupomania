@@ -1,19 +1,20 @@
 <template>
-  <div class="container-fluid footer">
+  <!-- section qui contient notre footer -->
+  <section class="container-fluid footer">
    <h3> {{ copyright }} </h3>
-  </div>
+  </section>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
-  data() {
+  name: 'Footer',// nom de notre page
+  data() {// données
     return{
       name: "Groupomania",
     }
   },
   computed: {
-      copyright() {
+    copyright() {// fonction qui contient le mot copyright avec le nom de l'entreprise et l'année actuel
     const currentYear = new Date().getFullYear()
     return `Copyright - ${this.name} -  ${currentYear}`
     }   

@@ -3,7 +3,7 @@
     <!-- div contenant la navbar et notre h1 -->
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand >  <router-link to='/Home' ><img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</router-link></b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse"></b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
@@ -15,11 +15,13 @@
         </b-collapse>
       </b-navbar>
 
+      <!-- jumbotron permet d'avoir un background gris en fond -->
       <b-jumbotron>
         <h1>Supprimer mon commentaire</h1>
       </b-jumbotron>
     </div>
 
+    <!-- contient notre card/commentaire a supprimer -->
     <div  class="col-10 col-md-7 mx-auto comment">
       <b-card :header='User.username' bg-variant="dark" text-variant="white" class="text-center mb-2 col-12 mx-auto  ">
         <b-card-text>
@@ -32,35 +34,43 @@
 </template>
 
 <script>
+// on importe axios pour nos requêtes
 import axios from 'axios'
-let sessionToken = JSON.parse(localStorage.getItem('session'));
-let userId = JSON.parse(localStorage.getItem('userId'));
-let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
-const regexNumber = /^\d+$/;
+
+const regexNumber = /^\d+$/;// regex pour les nombres
 export default {
-  name: 'OneMessage',
-  data() {
+  name: 'DeleteComment',//nom de notre page
+  data() {// données
        return{
         commentId: this.$route.params.commentId,
-        isAdmin: isAdmin,
-        userId: userId,
+        isAdmin: false,
+        userId: null,
+        sessionToken: null,
         commentUnique: [],
         User: [],
+
         submit:{
           commentId: this.$route.params.commentId,
         }
-       }
+      }
     },
   mounted(){
     let self = this;
+    this.sessionToken = JSON.parse(localStorage.getItem('session'));
+    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+    this.userId = JSON.parse(localStorage.getItem('userId'));// on vérifie si l'utilisateur est connecté
+      if(this.userId === undefined || this.userId === null){
+        this.$router.push('/')
+      }
     if ( !regexNumber.test(this.commentId) ) {// on vérifie si le contenu est correct
       this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
       window.location.replace('/Home');
     }
+    // requête get pour lire notre commentaire
     axios.get(`http://localhost:3000/api/messages/comment/${this.commentId}/`, 
       {headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Barer ${sessionToken}`
+      'Authorization': `Barer ${this.sessionToken}`
     }})
     .then(function (response) {
       self.commentUnique = response.data;
@@ -79,20 +89,23 @@ export default {
         this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
         window.location.replace('/Home')
       }
+      //requête delete pour supprimer notre commentaire
       axios.delete(`http://localhost:3000/api/messages/comment/${this.submit.commentId}/`,
       {headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Barer ${sessionToken}`
+        'Authorization': `Barer ${this.sessionToken}`
       }})
       .then(function (response) {
         console.log(response.data);
+        self.$swal("Commentaire supprimé :) ", " " , "success");
         self.$router.push('/Home');
       })
       .catch(function (erreur) {
         console.log(erreur);
       })
     },
-    deconnexion: function(){
+
+    deconnexion: function(){// permet de déconecter l'utilisateur, de supprimer ses données de connexion et de renvoyer vers la page de connexion
       localStorage.clear();
       this.$router.push('/');
     }
@@ -106,6 +119,7 @@ export default {
 img{
   max-height: 50vh;
 }
+
 div{
   padding: 0;
 }
@@ -116,6 +130,6 @@ div{
 }
 
 .comment{
- margin : 0 auto 5em auto;
+ margin : 15rem auto 5em auto;
 }
 </style>

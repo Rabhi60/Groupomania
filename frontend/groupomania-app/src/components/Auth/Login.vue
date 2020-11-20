@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid" >
     <!-- div contenant la partie navbar qui contient un lien vers l'inscription  et la page actuelle -->
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
@@ -13,10 +13,15 @@
         </b-collapse>
       </b-navbar>
 
-      <b-jumbotron  >
+      <!-- jumbotron permet d'avoir un background gris en fond -->
+      <b-jumbotron>
         <h1 >Connexion</h1>
       </b-jumbotron>
     </div>
+
+     <section >
+        <h2>Mon compte</h2>
+      </section>
 
     <!-- formulaire de connexion -->
     <b-form @submit="onSubmit"   class="col-md-8 mx-auto left">
@@ -47,6 +52,10 @@
         <p>Mot de passe oublie / connexion impossible ?</p>
       </router-link>
     </div>
+
+    <section>
+      <img src="../../assets/icon-above-font-removebg-preview.png" width="300" alt="image groupomania-app, réseau social d'entreprise">
+    </section>
   </div>
 </template>
 
@@ -59,8 +68,8 @@ const emailRegex    = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.{2,}\d)([-+!*$@%_\w]{8,100})$/;
 export default {
   
-  name: 'Login',
-  data() {
+  name: 'Login',// nom de la page
+  data() {// données
       return {
         form: {
           email: '',
@@ -73,24 +82,29 @@ export default {
     onSubmit(evt) {
       evt.preventDefault()
       const self = this;
-       if (!passwordRegex.test(this.form.password) || !emailRegex.test(this.form.email)) {// email validator permet d'accepter un mail valide, idem pour le regex
-       return this.$swal(
-                "un ou plusieurs champs suivant ne sont pas rempli correctement : ",
-                "email, password" ,
-                "error");
-    }
+      if (!passwordRegex.test(this.form.password) || !emailRegex.test(this.form.email)) {// email validator permet d'accepter un mail valide, idem pour le regex
+      return this.$swal( "un ou plusieurs champs suivant ne sont pas rempli correctement : ", "email, password" , "error");
+      }
+      //requête post pour se connecter 
       axios.post('http://localhost:3000/api/users/login/',{
-         email: this.form.email, password: this.form.password
+        email: this.form.email, password: this.form.password
       })
       .then(function (response) {
         //On traite la suite une fois la réponse obtenue 
-         console.log(response);
-         localStorage.setItem('session', JSON.stringify(response.data.token));
-         localStorage.setItem('userId', JSON.stringify(response.data.userId));
-         localStorage.setItem('isAdmin', JSON.stringify(response.data.isAdmin));
-        setTimeout(function() {
-             self.$router.push('/Home')
-        }, 1000);
+        console.log(response);
+        //on stocke les données de l'utilisateur pour maintenir la connexion de l'utilisateur
+        localStorage.setItem('session', JSON.stringify(response.data.token));
+        localStorage.setItem('userId', JSON.stringify(response.data.userId));
+        localStorage.setItem('isAdmin', JSON.stringify(response.data.isAdmin));
+        // on récupère les données pour pouvoir aller sur la page d'accueil
+        let userId = JSON.parse(localStorage.getItem('userId'));
+        
+        if(userId != null){// dès que userId n'est plus null on renvoie l'utilisateur vers la page d'accueil après 1000 ms
+          setTimeout(() => {
+            self.$router.push('/Home');
+            self.$swal("Vous êtes connecté :) ", " " , "success");
+          }, 1000);
+        }
       })
       .catch(function (erreur) {
         //On traite ici les erreurs éventuellement survenues
@@ -112,8 +126,12 @@ div{
 .left{
   text-align: left;
   font-weight: bold;
+  margin-top: 5rem;
+  font-size: 2rem;
 }
 .button{
-  font-size: 1.5rem;
+  font-size: 2rem;
+  margin: 2rem auto;
+  font-weight: bold;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid">
 
-    <div>
+    <div><!-- navbar créé par bootstrap-vue avec le logo de Groupomania  qui contient des liens vers la page nouveau message, Mon profil, Compte Admin si on l'est, l'Accueil et la Déconnexion -->
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand >  <router-link to='/Home' ><img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</router-link></b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse">
         </b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
@@ -22,55 +22,48 @@
 
     <!-- pour chaque utilisateur on a ses données -->
     <div :key="index" v-for="(user, index) in users " class="col-10 col-md-8 mx-auto my-5 h3" >
-        <b-card 
-        :header='user.username'
-        tag="article"
-        bg-variant="dark" 
-        text-variant="white" 
-        class="text-center mb-2  mx-auto"
-        >
-            <!-- On a dans le nom et prénom de l'utilisateur s'ils ont été renseigner -->
-            <b-card-text>
-                <p> Nom: {{user.firstname}} </p> 
-                <p> Prénom {{user.lastname}} </p> 
-            </b-card-text>
-        </b-card>
+      <b-card :header='user.username' tag="article" bg-variant="dark" text-variant="white" class="text-center mb-2  mx-auto">
+        <!-- On a dans le nom et prénom de l'utilisateur s'ils ont été renseigner -->
+        <b-card-text>
+          <p> Nom: {{user.firstname}} </p> 
+          <p> Prénom {{user.lastname}} </p> 
+        </b-card-text>
+      </b-card>
        
-        <!-- Bouton pour aller dans la page avec un utilisateur -->
-        <router-link :to='`/Home/AdminHome/OneUser/${user.id}`'>
-            <b-button  type="submit" variant="warning" class="  my-2 button" >Modifier ou Supprimer</b-button>
-        </router-link>
+      <!-- Bouton pour aller dans la page avec un utilisateur -->
+      <router-link :to='`/Home/AdminHome/OneUser/${user.id}`'>
+          <b-button  type="submit" variant="warning" class="  my-2 button" v-if="userId != user.id" >Modifier ou Supprimer</b-button>
+      </router-link>
     </div>
    
   </div>
 </template>
 
 <script>
+//on importe axios pour nos requêtes
 import axios from 'axios'
 
-let sessionToken = JSON.parse(localStorage.getItem('session'));
-let userId = JSON.parse(localStorage.getItem('userId'));
-
-
 export default {
-  name: 'Home',
-  data() {
-       return{
-          users: [],
-          userId: userId
-       }
-    },
-  
-  mounted(){
-    let self = this;
-     if(userId == undefined){
-      this.$router.push('/')
-    }
-    axios.get(`http://localhost:3000/api/admin/allUsers`, 
-      {headers: {
-   
-      'Authorization': `Barer ${sessionToken}`
-    }})
+    name: 'Home',
+    data() {
+        return{
+            users: [],
+            userId: null,
+            sessionToken: null
+        }
+      },
+    mounted(){
+      let self = this;
+      this.userId = JSON.parse(localStorage.getItem('userId'));
+      this.sessionToken = JSON.parse(localStorage.getItem('session'));
+      if(this.userId === undefined || this.userId === null){
+        this.$router.push('/')
+      }
+      axios.get(`http://localhost:3000/api/admin/allUsers`, 
+        {headers: {
+    
+        'Authorization': `Barer ${this.sessionToken}`
+      }})
       .then(function (response) {
         self.users = response.data.users;
         console.log(response.data);
@@ -78,15 +71,14 @@ export default {
       .catch(function (erreur) {
         console.log(erreur);
       })
-    
-  },
-  methods: {
-    deconnexion: function(){
-        localStorage.clear();
-        this.$router.push('/');
+    },
+    methods: {
+      deconnexion: function(){
+          localStorage.clear();
+          this.$router.push('/');
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

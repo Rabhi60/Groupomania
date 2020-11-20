@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand > <router-link to='/Home' ><img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</router-link></b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse"></b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
@@ -35,31 +35,31 @@
 </template>
 
 <script>
-
-// on récupère nos données via le localStorage
-let userId = JSON.parse(localStorage.getItem('userId'));
-let isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
-
-
 export default {
-  name: 'AdminHome', 
-   data() {
-     return{
-        isAdmin: isAdmin
-     }
+    name: 'AdminHome', 
+    data() {
+      return{
+        isAdmin: false,
+        userId : null
+      }
     },
-  mounted(){
-     if(userId == undefined){
-      this.$router.push('/')
-    }
-  },
-  methods: {
-    deconnexion: function(){
+
+    mounted(){
+      // on récupère nos données via le localStorage
+      this.userId = JSON.parse(localStorage.getItem('userId'));
+      this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+      if(this.userId === undefined || this.userId === null){
+        this.$router.push('/')
+      }
+    },
+
+    methods: {
+      deconnexion: function(){
         localStorage.clear();
         this.$router.push('/');
+      }
     }
-  }
-}
+  } 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

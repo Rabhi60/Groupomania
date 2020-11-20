@@ -3,8 +3,8 @@ const fs = require('fs');// on importe file system de node pour avoir accès aux
 const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 
 //constants
-const titleRegex = /^[a-zÀ-ÿ\d\-.'!\s]{2,30}$/i;
-const contentRegex = /^[a-zÀ-ÿ\d\-.',!:)\s]{0,250}$/i;
+const titleRegex = /^[a-zÀ-ÿ\d\-.'!:;)(?+\s]{2,30}$/i;
+const contentRegex = /^[a-zÀ-ÿ\d\-.',!?;:)(+\s]{0,250}$/i;
 const regexNumber = /^\d+$/;
 const ITEMS_LIMIT   = 50;
 
@@ -31,7 +31,7 @@ exports.createMessage = (req, res, next) => {
     db.User.findOne({//On récupère l'id de l'user pour l'ajouter à la création du message
       where: { id: req.body.userId }})
     .then(user => {
-      if(req.body.image == 'undefined' ){
+      if( req.body.image == 'undefined' ){
         return db.Message.create({
             UserId: user.id,
             title: req.body.title,
@@ -173,7 +173,14 @@ exports.deleteMessage =  (req, res, next) => {
       db.Message.findOne({where: { id: req.params.messageId }})// on recupère le message demandé
       .then(message => {
         if(message.UserId == user.id || user.isAdmin === true ){// On vérifie si c'est le créateur de l'image ou l'admin sinon on bloque
-          const filename = message.attachment.split('/images/')[1];// on extrait le nom du fichier à supprimer
+          if(message.attachment === null){
+            db.Message.destroy({
+              where: { id: req.params.messageId }
+              
+            }).then(() => res.status(200).json({message: 'Message supprimé!'}))// le message est supprimé
+              .catch(error => res.status(400).json({error}));// le contenu n'est pas correct
+          }else{
+            const filename = message.attachment.split('/images/')[1];// on extrait le nom du fichier à supprimer
           fs.unlink(`images/${filename}`, () => {// fs.unlink permet de supprimer le fichier, après on a le chemin du fichier entre paranthèse
             db.Message.destroy({
                 where: { id: req.params.messageId }
@@ -181,6 +188,8 @@ exports.deleteMessage =  (req, res, next) => {
               }).then(() => res.status(200).json({message: 'Message supprimé!'}))// le message est supprimé
                 .catch(error => res.status(400).json({error}));// le contenu n'est pas correct
             });
+          }
+          
         } else { // si ce n'est pas l'user ou l'admin on envoie un code 401
           return res.status(403).json('Accès non autorisé !')
         }

@@ -38,13 +38,13 @@ exports.deleteUserProfile = (req, res, next) => {
     db.User.findOne({
         where: {id: userId}
     }).then(user => {
-        if(user.isAdmin === true){
+        if(user.isAdmin === true && user.id != req.params.id ){
             db.User.destroy({
                 where: { id: req.params.id }
               }).then(() => res.status(200).json({message: 'User supprimée!'}))
                 .catch(error => res.status(400).json({error}));
         } else{
-            return res.status(403).json('accès non autorisée');
+            return res.status(403).json('accès non autorisée, si vous êtes l\'admin vous ne pouvez pas supprimez votre compte directement');
         }
         
     }).catch(() => res.status(500).json('problème serveur'));

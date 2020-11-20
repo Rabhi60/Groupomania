@@ -3,7 +3,7 @@
     <!-- div qui contient notre navbar et notre titre important h1 -->
     <div>
       <b-navbar toggleable type="dark" variant="dark" fixed='top'>
-        <b-navbar-brand > <img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</b-navbar-brand>
+        <b-navbar-brand > <router-link to='/Home' ><img alt="Groupomania logo" width='50' src="../../assets/iconbis.png">Groupomania</router-link></b-navbar-brand>
         <b-navbar-toggle target="navbar-toggle-collapse"></b-navbar-toggle>
         <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
@@ -54,40 +54,44 @@
 // on importe axios pour nos requêtes
 import axios from 'axios'
 //nos constantes avec nos données et un regex
-let sessionToken = JSON.parse(localStorage.getItem('session'));
-let userId = JSON.parse(localStorage.getItem('userId'));
+
 const regexNumber = /^\d+$/;
 export default {
   name: 'ModifyProfile',
    data() {
       return {
         form: {
-            isAdmin: '',
-            id: this.$route.params.id,
+          isAdmin: '',
+          userId: null,
+          sessionToken: null,
+          id: this.$route.params.id,
         }
       }
     },
   mounted(){// on vérifie si un utilisateur est connecté sinon on le renvoie vers la connexion
-     if(userId === undefined){
-      this.$router.push('/')
-    }
+    this.form.sessionToken = JSON.parse(localStorage.getItem('session'));
+    this.form.userId = JSON.parse(localStorage.getItem('userId'));
+    if(this.form.userId === undefined || this.form.userId === null){
+        this.$router.push('/')
+      }
   },  
   methods: {
     onDelete(evt) {
       evt.preventDefault()
       const self = this;
-      if( !regexNumber.test(this.form.id) || !regexNumber.test(userId) ){
+      if( !regexNumber.test(this.form.id) || !regexNumber.test(this.form.userId) ){
            return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
         }
         // requête pour supprimer un compte
       axios.delete(`http://localhost:3000/api/admin/deleteUser/${this.form.id}`, 
         { headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Barer ${sessionToken}`
+        'Authorization': `Barer ${this.form.sessionToken}`
       }})
       .then(function (response) {
         //On traite la suite une fois la réponse obtenue 
         console.log(response);
+        self.$swal("Compte supprimé :) ", " " , "success");
         self.$router.push('/Home/AdminHome');
       })
       .catch(function (response) {
@@ -100,17 +104,18 @@ export default {
       const self = this;
       if(this.form.isAdmin == 0 || this.form.isAdmin == 1){
         axios.put(`http://localhost:3000/api/admin/updateUser/${this.form.id}`,{
-          userId: userId,
+          userId: this.form.userId,
           isAdmin: this.form.isAdmin
         },
         {
         headers: {
          
-          'Authorization': `Barer ${sessionToken}` 
+          'Authorization': `Barer ${this.form.sessionToken}` 
         }})
         .then(function (response) {
           //On traite la suite une fois la réponse obtenue 
           console.log(response);
+          self.$swal("Compte modifié :) ", " " , "success");
           self.$router.push('/Home/AdminHome')
         })
         .catch(function (erreur) {

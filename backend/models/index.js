@@ -47,18 +47,13 @@ db.User.hasMany(db.Message);
 //Message
 db.Message.belongsTo(db.User);
 
-//Like //les deux premiers permettent la relation  entre les deux tables à travers like
-// db.User.belongsToMany(db.Message, { through: db.Like, foreignkey: 'userId', otherKey: 'messageId'});
-// db.Message.belongsToMany(db.User, { through: db.Like, foreignkey: 'messageId', otherKey: 'userId'});
+//Like 
 db.User.hasMany(db.Like);
 db.Like.belongsTo(db.User);
 db.Message.hasMany(db.Like);
 db.Like.belongsTo(db.Message);
 
-// Comment //les deux premiers permettent la relation  entre les deux tables à travers Comment
-// db.User.belongsToMany(db.Message, { through: db.Comment, foreignkey: 'userId', otherKey: 'messageId'});
-// db.Message.belongsToMany(db.User, { through: db.Comment, foreignkey: 'messageId', otherKey: 'userId'});
-// les deux relations suivantes font le lien entre les cléfs étrangère et la table de référence 
+// Comment 
 db.User.hasMany(db.Comment);
 db.Comment.belongsTo(db.User);
 db.Message.hasMany(db.Comment);

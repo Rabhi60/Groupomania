@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');// on importe body-parser
 const helmet = require('helmet');// on importe helmet
 const path = require('path');// on importe path qui nous donne accès au chemin de notre système de fichier
 const toobusy = require('toobusy-js');// on importe toobusy
-toobusy.maxLag(10);
+toobusy.maxLag(40);
 const dotenv = require('dotenv');// on importe dotenv pour masquer l'url/mdp/nom d'hôte
 dotenv.config();
 

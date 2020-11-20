@@ -1,5 +1,5 @@
 const db = require('../models/index');// on importe nos models
-const contentRegex = /^[a-zÀ-ÿ\d\-.':);,!\s]{0,250}$/i;// regex pour le contenu de nos messages
+const contentRegex = /^[a-zÀ-ÿ\d\-.':)(+;,_!?\s]{0,250}$/i;// regex pour le contenu de nos messages
 const jwt = require('jsonwebtoken');// on importe jwt pour vérifier nos tokens
 // Logique métier
 

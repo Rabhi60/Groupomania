@@ -34,7 +34,7 @@ const nameRegex = /^[a-zÀ-ÿ\d\-.'\s]{2,30}$/i;
   };
 
 // LOGIN// Connexion de l'utilisateur
-exports.login = function(req, res, next) {
+exports.login = (req, res, next) => {
 
   if (!emailRegex.test(req.body.email)) {// regex permet de vérifier l'input email
     return res.status(400).json({ 'error': 'Your email is invalid' });
