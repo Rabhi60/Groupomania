@@ -10,7 +10,7 @@ Application web / Réseau social
 5 - Installez MAMP, mettez le en marche en appuyant sur le bouton vert. Ouvrez un terminal et tapez `cd C:\`, tapez de nouveau `..\\MAMP\bin\mysql\bin\mysql -u root -p`   
 6 - Entrez `root` comme mot de passe puis vous allez avoir `mysql>` (qui est le terminal mysql)   
 7 - Création de la database (toujours dans le terminal mysql) :   
-  - Tapez `create database database_developdatabase_development;`     
+  - Tapez `create database database_development;`     
   - Quittez le terminal en tappant `exit` puis sur la touche entrer.  
      
 8 - Allez dans l'interface MAMP et cliquez sur `Open WebStart page`, un navigateur va s'ouvrir puis cliquer sur `Tools` puis `phpMyAdmin`  
