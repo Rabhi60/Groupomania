@@ -11,7 +11,8 @@ Application web / Réseau social
 6 - Entrez `root` comme mot de passe puis vous allez avoir `mysql>` (qui est le terminal mysql)   
 7 - Création de la database (toujours dans le terminal mysql) :   
   - Tapez `create database database_developdatabase_development;`     
-  - Quittez le terminal en tappant `exit` puis sur la touche entrer.   
+  - Quittez le terminal en tappant `exit` puis sur la touche entrer.  
+     
 8 - Allez dans l'interface MAMP et cliquez sur `Open WebStart page`, un navigateur va s'ouvrir puis cliquer sur `Tools` puis `phpMyAdmin`  
 9 - Sur la gauche vous aurez les databases, cliquez sur `database_development` puis `import`, insérez le fichier `database_development.sql` et appuyer sur le bouton `go` ou `executer`
 10 - Ouvrez un nouveau terminal sur le dossier projet puis tapez `cd backend`.  
