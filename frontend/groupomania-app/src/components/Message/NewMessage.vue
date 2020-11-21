@@ -30,7 +30,8 @@
         <!-- Image -->
         <b-form-group  label-for='attachment' class="paddingForm" >
           <p id="left">Votre Image :</p>
-          <b-form-file id="attachment" placeholder="Insérez une image"  accept="image/png,image/jpg,image/jpeg,image/gif" v-on:change="onImageChange"></b-form-file>
+          <b-form-file id="attachment" placeholder="Insérez une image"  accept=" image/png, image/jpg, image/jpeg, image/gif" v-on:change="onImageChange"></b-form-file>
+          <p>extensions acceptées : .gif/.jpg/.jpeg/.png</p>
         </b-form-group>
 
         <!-- texte/contenu -->
@@ -56,6 +57,7 @@
   const titleRegex = /^[a-zÀ-ÿ\d\-.'!:;)(+?\s]{2,30}$/i;
   const contentRegex = /^[a-zÀ-ÿ\d\-.':)(+;,!?\s]{0,250}$/i;
   const regexNumber = /^\d+$/;
+  const regexImg = /\.(gif|jpeg|png|jpg)$/i;
 
   export default {
   name: 'NewMessage',
@@ -89,19 +91,32 @@
     console.log(this.form.userId)
     const self = this;
       evt.preventDefault()
+
       if (!titleRegex.test(this.form.title)) {// regex pour avoir un titre qui contient entre 2 et 30 caractères
           return this.$swal( "Votre titre doit faire entre 2 et 30 caractères !  ", "" , "error");
         }
 
-        if (!contentRegex.test(this.form.content)) { // regex pour avoir un contenu qui contient entre 2 et 30 caractères
-          return this.$swal( "Votre contenu ne peut contenir plus de 250 caractères !  ", "" , "error");
-        }
+      if (!contentRegex.test(this.form.content)) { // regex pour avoir un contenu qui contient entre 2 et 30 caractères
+        return this.$swal( "Votre contenu ne peut contenir plus de 250 caractères !  ", "" , "error");
+      }
 
-        if( !regexNumber.test(this.form.dislikes) || !regexNumber.test(this.form.likes) ){
-          return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
-        }
-       if(this.form.image == 'undefined'  && this.form.content == '' ){
+      if( !regexNumber.test(this.form.dislikes) || !regexNumber.test(this.form.likes) ){
+        return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
+      }
+
+      if(this.form.image == 'undefined'  && this.form.content == '' ){
         return this.$swal("Vous devez remplir au minimum le titre, une image et/ou un texte ", "", "error");
+      }
+
+      if (this.form.image != "undefined") {
+        if (!regexImg.test(this.form.image.name)) {
+          console.log(this.form.image);
+          return this.$swal(
+            "Devez insérez une image gif/jpg/jpeg/png !  ",
+            "",
+            "error"
+          );
+        }
       }
       
       //form data est utilisé pour pouvoir envoyer des images au serveur

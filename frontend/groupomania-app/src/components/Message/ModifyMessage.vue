@@ -33,7 +33,8 @@
           <!-- Image -->
         <b-form-group  label-for='attachment' class="paddingForm groupImage" >
           <p id="left">Votre Image :</p>
-          <b-form-file id="attachment" placeholder="Insérez une image"  accept="image/png,image/jpg,image/jpeg,image/gif" v-on:change="onImageChange"></b-form-file>
+          <b-form-file id="attachment" placeholder="Insérez une image"  accept=" image/png, image/jpg, image/jpeg, image/gif" v-on:change="onImageChange"></b-form-file>
+          <p>extensions acceptées : .gif/.jpg/.jpeg/.png</p>
         </b-form-group>
 
           <!-- Contenu -->
@@ -58,6 +59,7 @@
   const titleRegex = /^[a-zÀ-ÿ\d\-.'!()+;?\s]{2,30}$/i;
   const contentRegex = /^[a-zÀ-ÿ\d\-.'()+:;,!?\s]{0,250}$/i;
   const regexNumber = /^\d+$/;
+  const regexImg = /\.(gif|jpeg|png|jpg)$/i;
 
   export default {
     name: 'ModifyMessage',
@@ -98,6 +100,15 @@
         }
         if( !regexNumber.test(this.form.userId) || !regexNumber.test(this.form.dislikes) || !regexNumber.test(this.form.likes) || !regexNumber.test(this.form.messageId) ){
           return this.$swal( "Votre requête ne peut contenir que des chiffres !  ", "" , "error");// la requête ne peut contenir que des chiffres
+        }
+        if (this.form.image != "undefined") {
+          if (!regexImg.test(this.form.image.name)) {
+            return this.$swal(
+            "Devez insérez une image gif/jpg/jpeg/png !  ",
+            "",
+            "error"
+            );
+          }
         }
 
         // on met les données au format data pour les envoyés au serveur pour qu'il traite les données.
