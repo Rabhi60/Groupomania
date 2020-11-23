@@ -30,4 +30,4 @@ Vous pouvez installer phpMyAdmin et l'ajouter dans le dossier MAMP (le chemin : 
 (Veuillez à supprimer les fichiers dans le dossier htdocs avant d'y ajouter  le dossier phpMyAdmin).  
 
 ## MAMP
-MAMP a été pour ce projet mais vous pouvez utiliser d'autres paquetages (WAMP, XAMPP...)
+MAMP a été utilisé pour ce projet mais vous pouvez utiliser d'autres paquetages (WAMP, XAMPP...)
