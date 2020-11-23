@@ -134,8 +134,10 @@ exports.modifyMessage = (req, res, next) => {
             ...req.body,
               attachment:  null,
               },
-              {where: { id: req.params.messageId }
-            })
+              {where: { id: req.params.messageId },
+              
+
+            }, db.Like.destroy({where :{messageId : message.id}}))
               .then(() =>  res.status(200).json('message modifié'))// code 200 ok, le message est modifié
               .catch(() => res.status(400).json({ 'error': 'contenu invalide' })); // 400 mauvaise requête du au mauvais contenu
         } else{
@@ -145,7 +147,7 @@ exports.modifyMessage = (req, res, next) => {
   
             },
             {where: { id: req.params.messageId }
-          })
+          }, db.Like.destroy({where :{messageId : message.id}}))
             .then(() =>  res.status(200).json('message modifié'))//le message est modifié
             .catch(() => res.status(400).json({ 'error': 'contenu invalide' }));// le contenu n'est pas correcte
           }
