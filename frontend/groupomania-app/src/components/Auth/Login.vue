@@ -49,7 +49,7 @@
     <!-- Mot de passe oublié, on est redirigé vers la page pour demander un nouveau mot de passe -->
     <div>
       <router-link to="/ResetPassword/">
-        <p>Mot de passe oublie / connexion impossible ?</p>
+        <p id='color'>Mot de passe oublie / connexion impossible ?</p>
       </router-link>
     </div>
 
@@ -133,5 +133,12 @@ div{
   font-size: 2rem;
   margin: 2rem auto;
   font-weight: bold;
+}
+#color{
+  color:black;
+  &:hover{
+    color:red;
+    font-weight: bold;
+  }
 }
 </style>

@@ -74,10 +74,13 @@ div{
   padding: 0;
 }
 .left{
+  padding-top: 8rem;
   text-align: left;
   font-weight: bold;
+  font-size: 2rem;
 }
 .button{
-  font-size: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
 }
 </style>
