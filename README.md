@@ -20,7 +20,7 @@ Application web / Réseau social
 12 - Tapez `npm i -g sequelize-cli ` qui permettra d'installer sequelize-cli sur l'ensemble de la machine.    
 13 - Tapez `nodemon server` ou `node server`.  
 14 - Ouvrez un nouveau terminal sur le dossier du projet puis tapez `cd frontend`, puis `cd groupomania-app` et enfin `npm i`.  
-15 - En cas d'erreur pour node-sass tapez `npm i node-sass`.
+15 - En cas d'erreur avec node-sass tapez `npm i node-sass`.
 16 - Tapez `npm run serve` pour lancer l'application web.  
 17 - Si la page ne s'ouvre pas directement au lancement allez sur la page `http://localhost:8080/`
 
