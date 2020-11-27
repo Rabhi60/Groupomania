@@ -14,7 +14,7 @@ Application web / Réseau social
   - Quittez le terminal en tappant `exit` puis sur la touche entrer.  
      
 8 - Allez dans l'interface MAMP et cliquez sur `Open WebStart page`, un navigateur va s'ouvrir puis cliquer sur `Tools` puis `phpMyAdmin`  
-9 - Sur la gauche vous aurez les databases, cliquez sur `database_development` puis `import`, insérez le fichier `database_development.sql` et appuyer sur le bouton `go` ou `executer`
+9 - Sur la gauche vous aurez les databases, cliquez sur `database_development` puis `import`, insérez le fichier `database_development.sql` et appuyer sur le bouton `go` ou `executer`   
 10 - Ouvrez un nouveau terminal sur le dossier projet puis tapez `cd backend`.  
 11 - Tapez `npm i`  
 12 - Tapez `npm i -g sequelize-cli ` qui permettra d'installer sequelize-cli sur l'ensemble de la machine.    
